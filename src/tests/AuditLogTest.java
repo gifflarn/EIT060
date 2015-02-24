@@ -6,6 +6,9 @@ import logs.Record;
 import org.junit.Before;
 import org.junit.Test;
 
+import ActionEvents.Action;
+import ActionEvents.Add;
+
 import people.Doctor;
 import people.Nurse;
 import people.Patient;
@@ -24,11 +27,12 @@ public class AuditLogTest {
 		Doctor harald = new Doctor("Harald", "12345", "lth");
 		Nurse n = new Nurse("Lukas", "43434", "lth");
 		Patient p = new Patient("Joel", "54545");
-		
+		Action a = new Add(p);
 		p.addDoctor(harald);
 		Record r = new Record(harald,n,"lth", "cancer");
 		p.addRecord(harald, r);
 		
-		AuditLog.saveToFile(p);
+		
+		AuditLog.saveToFile(p, a, p);
 	}
 }
