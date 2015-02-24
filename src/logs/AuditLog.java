@@ -1,12 +1,12 @@
-package records;
+package logs;
 
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 
 import people.Doctor;
+import people.Nurse;
+import people.Patient;
 import people.Person;
 
 public class AuditLog {
@@ -23,8 +23,6 @@ public class AuditLog {
 			writer.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -32,7 +30,16 @@ public class AuditLog {
 	}
 	
 	public static void main(String[] args){
-		Person p = new Doctor("Lukas", "hejdå");
+		Doctor harald = new Doctor("Harald", "12345", "lth");
+		Nurse n = new Nurse("Lukas", "43434", "lth");
+		Patient p = new Patient("Joel", "54545");
+		
+		p.addDoctor(harald);
+		Record r = new Record(harald,n,"lth", "cancer");
+		System.out.println(p.addRecord(harald, r));
+		
+		
+		
 		saveToFile(p);
 	}
 }

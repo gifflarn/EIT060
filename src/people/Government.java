@@ -1,7 +1,7 @@
 package people;
 
 
-public class Government extends Employee {
+public class Government extends Person {
 	
 	
 	public Government(String username, String hashPw) {

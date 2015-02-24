@@ -1,10 +1,11 @@
 package people;
 
-import records.records;
+import java.util.ArrayList;
+
+import logs.Record;
 
 
 public abstract class Person {
-
 	protected String username;
 	protected String hashPw;
 	protected static String type;
@@ -15,14 +16,13 @@ public abstract class Person {
 	}
 	
 	
-	public records getRecords(){
-		
-		
-		return null;
-		
-	}
+//	public abstract ArrayList<Record> retrieveRecords(Patient p);
 
 
 	public abstract CharSequence data();
+	
+	public String toString(){
+		return username;
+	}
 	
 }

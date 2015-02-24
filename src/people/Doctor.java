@@ -1,10 +1,14 @@
 package people;
 
+import java.util.ArrayList;
+
+import logs.Record;
+
 
 public class Doctor extends Employee{
 	
-	public Doctor(String username, String hashPw) {
-		super(username, hashPw);
+	public Doctor(String username, String hashPw, String division) {
+		super(username, hashPw, division);
 	}
 
 
@@ -12,5 +16,7 @@ public class Doctor extends Employee{
 	public String data() {
 		return username + ":Doctor:" + System.currentTimeMillis()/1000 + "\n";
 	}
+
+
 
 }
