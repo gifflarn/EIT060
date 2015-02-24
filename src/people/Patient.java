@@ -20,6 +20,10 @@ public class Patient extends Person{
 	public void addDoctor(Doctor d) {
 		doctors.add(d);
 	}
+	
+	public void addNurse(Nurse n){
+		nurses.add(n);
+	}
 
 	public void addTreatment(Doctor d, Nurse n, String division, String data){
 		records.add(new Record(d, n, division, data));
