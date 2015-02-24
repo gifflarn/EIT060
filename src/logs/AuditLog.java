@@ -40,6 +40,7 @@ public class AuditLog {
 		p.addDoctor(harald);
 		Record r = new Record(harald,n,"lth", "cancer");
 		System.out.println(p.addRecord(harald, r));
+		System.out.println(p.getRecords(harald));
 		
 		
 		

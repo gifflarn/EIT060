@@ -25,9 +25,9 @@ public class Patient extends Person{
 		nurses.add(n);
 	}
 
-	public void addTreatment(Doctor d, Nurse n, String division, String data){
+	/*public void addTreatment(Doctor d, Nurse n, String division, String data){
 		records.add(new Record(d, n, division, data));
-	}
+	}*/
 
 	public String getRecords(Patient p) {
 		if(this != p){
@@ -56,11 +56,8 @@ public class Patient extends Person{
 	}
 	
 	public String getRecords(Doctor doctor){
-		for (Doctor d : doctors) {
-			if (d == doctor) {
-				return records.toString();
-			}
-		}
+		if (doctors.contains(doctor))
+			return records.toString();
 		
 		for(Record r : records) {
 			if (r.getDivision().equals(doctor.division))
@@ -71,11 +68,9 @@ public class Patient extends Person{
 	}
 	
 	public boolean addRecord(Doctor doctor, Record record) {
-		for (Doctor d : doctors) {
-			if (d == doctor) {
-				records.add(record);
-				return true;
-			}
+		if (doctors.contains(doctor)) {
+			records.add(record);
+			return true;
 		}
 		
 		for(Record r : records) {
