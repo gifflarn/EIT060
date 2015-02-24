@@ -24,6 +24,7 @@ public class server implements Runnable {
     	    numConnectedClients++;
             System.out.println("client connected");
             System.out.println("client name (cert subject DN field): " + subject);
+            System.out.println("issuer (cert issuer DN field): " + cert.getIssuerDN().getName());
             System.out.println(numConnectedClients + " concurrent connection(s)\n");
 
             PrintWriter out = null;
@@ -83,9 +84,11 @@ public class server implements Runnable {
                 KeyStore ks = KeyStore.getInstance("JKS");
 				KeyStore ts = KeyStore.getInstance("JKS");
                 char[] password = "password".toCharArray();
+                
+                String PATH = "../";
 
-                ks.load(new FileInputStream("serverkeystore"), password);  // keystore password (storepass)
-                ts.load(new FileInputStream("servertruststore"), password); // truststore password (storepass)
+                ks.load(new FileInputStream(PATH + "serverkeystore"), password);  // keystore password (storepass)
+                ts.load(new FileInputStream(PATH + "servertruststore"), password); // truststore password (storepass)
                 kmf.init(ks, password); // certificate password (keypass)
                 tmf.init(ts);  // possible to use keystore as truststore here
                 ctx.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
