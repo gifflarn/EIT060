@@ -25,11 +25,6 @@ public class Patient extends Person{
 		records.add(new Record(d, n, division, data));
 	}
 
-	@Override
-	public CharSequence data() {
-		return username + ":Patient:" + System.currentTimeMillis()/1000 + "\n";
-	}
-
 	public String getRecords(Patient p) {
 		if(this != p){
 			return null;

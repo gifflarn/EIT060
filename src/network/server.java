@@ -1,9 +1,20 @@
 package network;
-import java.io.*;
-import java.net.*;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
 import java.security.KeyStore;
-import javax.net.*;
-import javax.net.ssl.*;
+
+import javax.net.ServerSocketFactory;
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLServerSocket;
+import javax.net.ssl.SSLServerSocketFactory;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.TrustManagerFactory;
 import javax.security.cert.X509Certificate;
 
 public class server implements Runnable {

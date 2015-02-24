@@ -9,7 +9,7 @@ public class Government extends Person {
 	}
 
 	@Override
-	public CharSequence data() {
+	public String data() {
 		return username + ":Government:" + System.currentTimeMillis()/1000 + "\n";
 	}
 
