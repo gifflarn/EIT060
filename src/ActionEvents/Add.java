@@ -1,6 +1,7 @@
 package ActionEvents;
 
 import people.Patient;
+import people.Person;
 
 public class Add extends Action{
 	public Add(Patient p) {
@@ -13,7 +14,7 @@ public class Add extends Action{
 	}
 
 	@Override
-	public void execute(Patient p) {
+	public void execute(Person p) {
 		// TODO Auto-generated method stub
 		
 	}
