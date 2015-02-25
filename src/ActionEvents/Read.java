@@ -5,7 +5,7 @@ import people.Person;
 
 public class Read extends Action{
 
-	public Read(Patient p) {
+	public Read(Person p) {
 		super(p);
 	}
 
@@ -15,9 +15,8 @@ public class Read extends Action{
 	}
 
 	@Override
-	public void execute(Person p) {
-		// TODO Auto-generated method stub
-		
+	public void execute(Patient p) {
+		p.getRecords(this.p);
 	}
 
 }

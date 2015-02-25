@@ -50,6 +50,9 @@ public class ServerConnectionHandler implements Runnable {
 			String clientMsg = null;
 			while ((clientMsg = in.readLine()) != null) {
 				System.out.println("received '" + clientMsg + "' from client");
+				if (clientMsg.split(" ").length < 2) {
+					continue;
+				}
 				Patient p = new Patient(clientMsg.split(" ")[1], "");
 				out.println(handleInput(clientMsg.split(" ")[0], p));
 				out.flush();
@@ -104,13 +107,13 @@ public class ServerConnectionHandler implements Runnable {
 				KeyStore ts = KeyStore.getInstance("JKS");
 				char[] password = "password".toCharArray();
 
-				ks.load(new FileInputStream("lab1/serverkeystore"),
-						password); // keystore
+				ks.load(new FileInputStream("lab1/serverkeystore"), password); // keystore
 				// password
 				// (storepass)
-				ts.load(new FileInputStream("lab1/servertruststore"),
-						password); // truststore
-									// password // (storepass)
+				ts.load(new FileInputStream("lab1/servertruststore"), password); // truststore
+																					// password
+																					// //
+																					// (storepass)
 				kmf.init(ks, password); // certificate password (keypass)
 				tmf.init(ts); // possible to use keystore as truststore here
 				ctx.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
@@ -127,7 +130,7 @@ public class ServerConnectionHandler implements Runnable {
 
 	private String handleInput(String clientMsg, Patient p) {
 		Action a = null;
-		switch(clientMsg.toLowerCase()){
+		switch (clientMsg.toLowerCase()) {
 		case "add":
 			a = new Add(p);
 			break;
@@ -138,7 +141,7 @@ public class ServerConnectionHandler implements Runnable {
 			a = new Read(p);
 			break;
 		}
-		
+
 		a.execute(p);
 		return null;
 

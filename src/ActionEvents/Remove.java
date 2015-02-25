@@ -5,7 +5,7 @@ import people.Person;
 
 public class Remove extends Action{
 
-	public Remove(Patient p) {
+	public Remove(Person p) {
 		super(p);
 		// TODO Auto-generated constructor stub
 	}
@@ -16,8 +16,8 @@ public class Remove extends Action{
 	}
 
 	@Override
-	public void execute(Person p) {
-	//	if()
+	public void execute(Patient p) {
+		p.getRecords(this.p);
 	}
 
 }

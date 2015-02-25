@@ -1,10 +1,11 @@
 package ActionEvents;
 
+import logs.Record;
 import people.Patient;
 import people.Person;
 
 public class Add extends Action{
-	public Add(Patient p) {
+	public Add(Person p) {
 		super(p);
 	}
 	
@@ -14,8 +15,8 @@ public class Add extends Action{
 	}
 
 	@Override
-	public void execute(Person p) {
-		// TODO Auto-generated method stub
+	public void execute(Patient p) {
+		p.addRecord(this.p, new Record(null, null, null, null));
 		
 	}
 
