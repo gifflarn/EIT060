@@ -27,4 +27,6 @@ Joel:Patient:1424819251
 :Added new entry:JoelJoel:Patient:1424819302
 :Added new entry:JoelJoel:Patient:1424819307
 :Added new entry:JoelJoel:Patient:1424819431
+:Added new entry:JoelJoel:Patient:1424821655
+:Added new entry:JoelJoel:Patient:1424821715
 :Added new entry:Joel
