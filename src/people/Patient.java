@@ -16,7 +16,6 @@ public class Patient extends Person{
 		doctors = new ArrayList<Doctor>();
 		nurses = new ArrayList<Nurse>();
 	}
-	
 	public void addDoctor(Doctor d) {
 		doctors.add(d);
 	}

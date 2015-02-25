@@ -1,6 +1,7 @@
 package ActionEvents;
 
 import people.Patient;
+import people.Person;
 
 public class Remove extends Action{
 
@@ -15,9 +16,8 @@ public class Remove extends Action{
 	}
 
 	@Override
-	public void execute(Patient p) {
-		// TODO Auto-generated method stub
-		
+	public void execute(Person p) {
+	//	if()
 	}
 
 }
