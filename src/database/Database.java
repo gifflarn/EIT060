@@ -80,6 +80,10 @@ public class Database {
 		return conn != null;
 	}
 
+	public Connection getConnection() {
+		return conn;
+	}
+	
 	public ArrayList<RecordEntry> getRecords(Person person, String patientName) {
 		ArrayList<RecordEntry> records = new ArrayList<RecordEntry>();
 		PreparedStatement ps = null;
@@ -229,14 +233,14 @@ public class Database {
 	}
 
 	@SuppressWarnings("resource")
-	public String deleteRecord(Person person, String patientName, RecordEntry r) {
+	public String deleteRecord(Person person, String patientName, int recordEntryNbr) {
 		String message = null;
 		PreparedStatement ps = null;
 		try {
-			if (!person instanceof Doctor)) {
-				message = "You do not have the required access rights to create a patient record";
+			if (!(person instanceof Government)) {
+				message = "You do not have the required access rights to delete patient records";
 			}
-			Doctor d = (Doctor) person;
+			Government g = (Government) person;
 			String doctorName = d.getName();
 			String sql = "SELECT * FROM Records WHERE doctor = ? and patient = ?";
 			ps = conn.prepareStatement(sql);
@@ -274,9 +278,9 @@ public class Database {
 	}
 	
 	@SuppressWarnings("null")
-	public String recordsToString(ArrayList<Record> records) {
+	public String recordsToString(ArrayList<RecordEntry> records) {
 		StringBuilder recordContent = null;
-		for (Record r : records) {
+		for (RecordEntry r : records) {
 			recordContent.append("Patient name: " + r.getPatient() + "\n"
 					+ "Doctor: " + r.getDoctor() + "\n" + "Assisting nurse: "
 					+ r.getNurse() + "\n" + "Hospital division: "
@@ -285,3 +289,6 @@ public class Database {
 		}
 		return recordContent.toString();
 	}
+	
+	
+}	
