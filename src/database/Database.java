@@ -2,6 +2,8 @@ package database;
 
 import java.sql.*;
 import java.util.ArrayList;
+import people.Person;
+import people.Doctor;
 
 /**
  * Database is a class that specifies the interface to the movie database. Uses
@@ -72,12 +74,14 @@ public class Database {
 		return conn != null;
 	}
 
-	public ArrayList<Record> readRecords(Person person, String patientName) {
+	public ArrayList<Record> getRecords(Person p, String patientName) {
 		ArrayList<Record> records = new ArrayList<Record>();
+		String personType = p.getClass().getSimpleName();
 		PreparedStatement ps = null;
-		if(persontype = Doctor) {
-			doctorName = person.getName();
-			hospitalDistrict = person.getDistrict();
+		if(p instanceof Doctor) {
+			Doctor d = (Doctor)p;
+			String doctorName = p.getName();
+			String hospitalDistrict = p.getDivision();
 			String sql = "SELECT * FROM Records WHERE patient = ? AND doctor = ? OR district = ?";
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, patientName);
@@ -103,6 +107,39 @@ public class Database {
 
 			ResultSet rs = ps.executeQuery();
 		}
+		
+		public ArrayList<Record> updateRecord(Person person, Record record) {
+			ArrayList<Record> records = new ArrayList<Record>();
+			PreparedStatement ps = null;
+			if(persontype = Doctor) {
+				doctorName = person.getName();
+				hospitalDistrict = person.getDistrict();
+				String sql = "SELECT * FROM Records WHERE patient = ? AND doctor = ? OR district = ?";
+				ps = conn.prepareStatement(sql);
+				ps.setString(1, patientName);
+				ps.setString(2, doctorName);
+				ps.setString(3, hospitalDistrict);
+				ResultSet rs = ps.executeQuery();
+			}	
+			if(persontype == Nurse) {
+				nurseName = person.getName();
+				hospitalDistrict = person.getDistrict();
+				String sql = "SELECT * FROM Records WHERE patient = ? AND nurse = ? OR district = ?";
+				ps = conn.prepareStatement(sql);
+				ps.setString(1, patientName);
+				ps.setString(2, nurseName);
+				ps.setString(3, hospitalDistrict);
+				ResultSet rs = ps.executeQuery();
+			}
+			if(persontype == Patient) {
+				patientName = person.getName();
+				String sql = "SELECT * FROM Records WHERE patient = ?";
+				ps = conn.prepareStatement(sql);
+				ps.setString(1, patientName);
+
+				ResultSet rs = ps.executeQuery();
+			}
+		
 		while (rs.next()) {
 			records.add(new Record(rs.getString("patient"), rs.getString("doctor"), rs.getString("nurse"), rs.getString("division"), rs.getString("data")));
 		}
@@ -111,7 +148,7 @@ public class Database {
 	
 	public String createRecord(Person p, String patientName, String associatedNurse, String data) {
 		String message = null;
-		persontype = p.
+		persontype = p.get
 		if (persontype != Doctor) {
 			message = "You do not have the required access rights to create a patient record";
 		}

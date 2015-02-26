@@ -22,7 +22,7 @@ public abstract class Person {
 		return username + ":" + this.getClass().getSimpleName() + ":" + System.currentTimeMillis()/1000 + "\n";
 	}
 	
-	public String toString(){
+	public String getName(){
 		return username;
 	}
 

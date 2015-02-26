@@ -9,4 +9,9 @@ public abstract class Employee extends Person{
 		super(username, hashPw);
 		this.division = division;
 	}
+	
+	String getDivision() {
+		return division;
+	}
+	
 }
