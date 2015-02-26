@@ -13,6 +13,8 @@ import people.Patient;
 import people.Person;
 
 public class AuditLog {
+	
+	static String AUDIT_LOG_PATH = "audit_log";
 
 	public AuditLog(){
 		//saveToFile();
@@ -21,8 +23,8 @@ public class AuditLog {
 	public static void saveToFile(Person p, Action a, Patient pat){
 		FileWriter writer = null;
 		try {
-			writer = new FileWriter("log.txt", true);
-			writer.append(p.data() + ":" + a.data(pat));
+			writer = new FileWriter(AUDIT_LOG_PATH, true);
+			writer.append(a.data(pat) + ":" + p.data());
 			writer.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -33,17 +35,22 @@ public class AuditLog {
 	}
 	
 	public static void main(String[] args){
+		
 		Doctor harald = new Doctor("Harald", "12345", "lth");
 		Nurse n = new Nurse("Lukas", "43434", "lth");
 		Patient p = new Patient("Joel", "54545");
-		Action a = new Add(p);
 		p.addDoctor(harald);
-		Record r = new Record(harald,n,"lth", "cancer");
-		System.out.println(p.addRecord(harald, r));
+
+		
+		Add a = new Add(p);
+		a.execute(p,harald,n,"lth","cancer");
+		
+		//RecordEntry r = new RecordEntry(harald,n,"lth", "cancer");
+		//System.out.println(p.addRecord(harald, r));
+		
 		System.out.println(p.getRecords(harald));
+		System.out.println(harald.data());
 		
-		
-		
-		saveToFile(p, a, p);
+		saveToFile(harald, a, p);
 	}
 }

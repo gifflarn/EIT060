@@ -11,12 +11,12 @@ public class Read extends Action{
 
 	@Override
 	public CharSequence data(Patient p) {
-		return "Read the entry:" + p.toString();
+		return "READ_ENTRY:" + p.toString();
 	}
 
 	@Override
 	public void execute(Patient p) {
-		p.getRecords(this.p);
+		p.getRecords(this.p); //måste returnera
 	}
 
 }
