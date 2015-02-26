@@ -18,8 +18,16 @@ import javax.net.ssl.SSLSocket;
 import javax.net.ssl.TrustManagerFactory;
 import javax.security.cert.X509Certificate;
 
+<<<<<<< HEAD
 import database.*;
 import people.*;
+=======
+import people.Doctor;
+import people.Government;
+import people.Nurse;
+import people.Patient;
+import people.Person;
+>>>>>>> 2fd15b7d80a51605d23c954d61fc9dcb31269517
 
 import ActionEvents.Action;
 import ActionEvents.Add;
@@ -29,8 +37,13 @@ import ActionEvents.Remove;
 public class ServerConnectionHandler implements Runnable {
 	private ServerSocket serverSocket = null;
 	private static int numConnectedClients = 0;
+<<<<<<< HEAD
 	private Patient p;
 	private Database database;
+=======
+	//private Patient p;
+	private Person p;
+>>>>>>> 2fd15b7d80a51605d23c954d61fc9dcb31269517
 
 	public ServerConnectionHandler(ServerSocket ss) throws IOException {
 		serverSocket = ss;
@@ -45,6 +58,20 @@ public class ServerConnectionHandler implements Runnable {
 			X509Certificate cert = (X509Certificate) session
 					.getPeerCertificateChain()[0];
 			String subject = cert.getSubjectDN().getName();
+			String[] info = new String[]{subject.split("CN=")[0].split(",")[0], subject.split("OU=")[0].split(",")[0], subject.split("O=")[0].split(",")[0]};
+			switch(info[1]){
+			case "Doctor":
+				p = new Doctor(info[0], "", info[2]);
+				break;
+			case "Nurse":
+				p = new Nurse(info[0], "", info[2]);
+				break;
+			case "Patient":
+				p = new Patient(info[0], "");
+				break;
+			case "Government":
+				p = new Government(info[0], "");
+			}
 			numConnectedClients++;
 			System.out.println("client connected");
 			System.out.println("client name (cert subject DN field): "
