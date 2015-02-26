@@ -19,6 +19,8 @@ import javax.net.ssl.TrustManagerFactory;
 import javax.security.cert.X509Certificate;
 import javax.swing.JFrame;
 
+import logs.AuditLog;
+
 import database.*;
 import people.*;
 
@@ -27,6 +29,7 @@ public class ServerConnectionHandler implements Runnable {
 	private static int numConnectedClients = 0;
 	private Database database;
 	private Person p;
+	private Person p2;
 
 	public ServerConnectionHandler(ServerSocket ss) throws IOException {
 		serverSocket = ss;
@@ -59,6 +62,7 @@ public class ServerConnectionHandler implements Runnable {
 				p = new Government(info[0], "");
 			}
 			p = new Doctor("Joel Pålsson", "", info[2]);
+			p2 = new Nurse("Lukas Brandt Brune", "", info[2]);
 			numConnectedClients++;
 			System.out.println("client connected");
 			System.out.println("client name (cert subject DN field): "
@@ -165,8 +169,9 @@ public class ServerConnectionHandler implements Runnable {
 					.getText("Enter Nurse's Name :");
 			String data = new ClientGUI().getText("Enter Additional Data:");
 //			p = new Doctor
-			database.createRecord(p, patientName, associatedNurse, data);
+			System.out.println(database.createRecord(p, patientName, associatedNurse, data));
 			msg = "ADDED_ENTRY:" + patientName;
+			
 			break;
 		case "remove":
 			TableFromDatabase frame = new TableFromDatabase(p);
@@ -189,7 +194,7 @@ public class ServerConnectionHandler implements Runnable {
 		case "edit":
 		//	database.updateRecord(p, id);
 		}
-
+		AuditLog.saveToFile(p, patientName);
 		return msg;
 
 	}

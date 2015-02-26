@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import network.ClientConnectionHandler;
 import network.ServerConnectionHandler;
 
 import database.Database;
@@ -21,11 +22,11 @@ public class AuditLog {
 		//saveToFile();
 	}
 	
-	public static void saveToFile(Person p, Patient pat){
+	public static void saveToFile(Person p, String msg){
 		FileWriter writer = null;
 		try {
 			writer = new FileWriter(AUDIT_LOG_PATH, true);
-			writer.append(":" + p.data());
+			writer.append(msg + ":" + p.data());
 			writer.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
