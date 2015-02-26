@@ -12,7 +12,7 @@ public class Remove extends Action{
 
 	@Override
 	public CharSequence data(Patient p) {
-		return "Read the entry:" + p.toString();
+		return "REMOVED_ENTRY:" + p.toString();
 	}
 
 	@Override

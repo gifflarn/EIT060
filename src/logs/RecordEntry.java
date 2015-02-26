@@ -3,14 +3,14 @@ package logs;
 import people.Doctor;
 import people.Nurse;
 
-public class Record {
+public class RecordEntry {
 	private Doctor d;
 	private Nurse n;
 	private String division;
 	private String data;
 	
 	
-	public Record(Doctor d, Nurse n, String division, String data) {
+	public RecordEntry(Doctor d, Nurse n, String division, String data) {
 		this.d = d;
 		this.n = n;
 		this.division = division;

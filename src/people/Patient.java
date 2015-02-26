@@ -2,16 +2,16 @@ package people;
 
 import java.util.ArrayList;
 
-import logs.Record;
+import logs.RecordEntry;
 
 public class Patient extends Person {
-	private ArrayList<Record> records;
+	private ArrayList<RecordEntry> records;
 	private ArrayList<Doctor> doctors;
 	private ArrayList<Nurse> nurses;
 
 	public Patient(String username, String password) {
 		super(username, password);
-		records = new ArrayList<Record>();
+		records = new ArrayList<RecordEntry>();
 		doctors = new ArrayList<Doctor>();
 		nurses = new ArrayList<Nurse>();
 	}
@@ -45,8 +45,8 @@ public class Patient extends Person {
 	// return null;
 	// }
 
-	public boolean addRecord(Nurse n, Record record) {
-		for (Record r : records) {
+	public boolean addRecord(Nurse n, RecordEntry record) {
+		for (RecordEntry r : records) {
 			if (r.getNurse() == n) {
 				records.add(record);
 				return true;
@@ -61,7 +61,7 @@ public class Patient extends Person {
 			if (doctors.contains(p))
 				return records.toString();
 
-			for (Record r : records) {
+			for (RecordEntry r : records) {
 				if (r.getDivision().equals(((Doctor) p).division))
 					return records.toString();
 			}
@@ -69,7 +69,7 @@ public class Patient extends Person {
 			break;
 
 		case "Nurse":
-			for (Record r : records) {
+			for (RecordEntry r : records) {
 				if (r.getNurse() == p
 						|| r.getDivision() == ((Nurse) p).division)
 					return records.toString();
@@ -104,15 +104,15 @@ public class Patient extends Person {
 	// return null;
 	// }
 
-	public boolean addRecord(Person p, Record record) {
-		switch (p.getClass().getName()) {
+	public boolean addRecord(Person p, RecordEntry record) {
+		switch (p.getClass().getSimpleName()) {
 		case "Doctor":
 			if (doctors.contains(p)) {
 				records.add(record);
 				return true;
 			}
 
-			for (Record r : records) {
+			for (RecordEntry r : records) {
 				if (r.getDivision().equals(((Doctor) p).division)) {
 					records.add(record);
 					return true;
@@ -121,7 +121,7 @@ public class Patient extends Person {
 			return false;
 
 		case "Nurse":
-			for (Record r : records) {
+			for (RecordEntry r : records) {
 				if (r.getNurse() == p) {
 					records.add(record);
 					return true;
