@@ -111,6 +111,7 @@ public class Database {
 	
 	public String createRecord(Person person, String patientName, String associatedNurse, String data) {
 		String message = null;
+		persontype = person
 		if (persontype != Doctor) {
 			message = "You do not have the required access rights to create a patient record";
 		}
