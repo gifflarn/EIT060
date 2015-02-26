@@ -64,6 +64,7 @@ public class ServerConnectionHandler implements Runnable {
 			case "Government":
 				p = new Government(info[0], "");
 			}
+			p = new Doctor(info[0], "", info[2]);
 			numConnectedClients++;
 			System.out.println("client connected");
 			System.out.println("client name (cert subject DN field): "
@@ -168,7 +169,7 @@ public class ServerConnectionHandler implements Runnable {
 			String associatedNurse = new ClientGUI()
 					.getText("Enter Nurse's Name :");
 			String data = new ClientGUI().getText("Enter Additional Data:");
-
+//			p = new Doctor
 			database.createRecord(p, patientName, associatedNurse, data);
 			msg = "ADDED_ENTRY: " + patientName;
 			break;
@@ -183,7 +184,7 @@ public class ServerConnectionHandler implements Runnable {
 			} catch (NumberFormatException e) {
 				return "";
 			}
-			database.deleteRecord(p, patientName, id);
+		//	database.deleteRecord(p, patientName, id);
 			msg = "REMOVED_ENTRY: " + id + ":" + patientName;
 			break;
 		case "read":

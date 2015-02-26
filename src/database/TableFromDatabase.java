@@ -88,11 +88,5 @@ public class TableFromDatabase extends JFrame
         getContentPane().add( buttonPanel, BorderLayout.SOUTH );
     }
 
-    public static void main(String[] args)
-    {
-        TableFromDatabase frame = new TableFromDatabase();
-        frame.setDefaultCloseOperation( EXIT_ON_CLOSE );
-        frame.pack();
-        frame.setVisible(true);
-    }
+
 }

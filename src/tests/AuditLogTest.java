@@ -28,7 +28,7 @@ public class AuditLogTest {
 		Patient p = new Patient("Joel", "54545");
 		Action a = new Add(p);
 	//	p.addDoctor(harald);
-		RecordEntry r = new RecordEntry(harald,n,"lth", "cancer");
+	//	RecordEntry r = new RecordEntry(harald,n,"lth", "cancer");
 		//p.addRecord(harald, r);
 		
 		
