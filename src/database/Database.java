@@ -168,7 +168,7 @@ public class Database {
 				ps.setString(5, doctorName);
 				ps.setString(6, associatedNurse);
 				ps.setString(7, hospitalDivision);
-				ps.setString(7, data);
+				ps.setString(8, data);
 				int i = ps.executeUpdate();
 				if (i != 1) {
 					message = "Unable add the record to the database";

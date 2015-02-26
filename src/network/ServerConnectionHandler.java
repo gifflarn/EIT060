@@ -1,6 +1,5 @@
 package network;
 
-import java.awt.Frame;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -22,11 +21,6 @@ import javax.swing.JFrame;
 
 import database.*;
 import people.*;
-
-import ActionEvents.Action;
-import ActionEvents.Add;
-import ActionEvents.Read;
-import ActionEvents.Remove;
 
 public class ServerConnectionHandler implements Runnable {
 	private ServerSocket serverSocket = null;
@@ -64,7 +58,7 @@ public class ServerConnectionHandler implements Runnable {
 			case "Government":
 				p = new Government(info[0], "");
 			}
-			p = new Doctor(info[0], "", info[2]);
+			p = new Doctor("Joel Pålsson", "", info[2]);
 			numConnectedClients++;
 			System.out.println("client connected");
 			System.out.println("client name (cert subject DN field): "
@@ -159,10 +153,11 @@ public class ServerConnectionHandler implements Runnable {
 	}
 
 	private String handleInput(String clientMsg, Person p) {
-		String msg = "";
 		int id;
-
+		database = new Database();
+		database.openConnection("db03", "db03", "joel");
 		String patientName = new ClientGUI().getText("Enter Patient's Name :");
+		String msg = "";
 
 		switch (clientMsg.toLowerCase()) {
 		case "add":
@@ -171,7 +166,7 @@ public class ServerConnectionHandler implements Runnable {
 			String data = new ClientGUI().getText("Enter Additional Data:");
 //			p = new Doctor
 			database.createRecord(p, patientName, associatedNurse, data);
-			msg = "ADDED_ENTRY: " + patientName;
+			msg = "ADDED_ENTRY:" + patientName;
 			break;
 		case "remove":
 			TableFromDatabase frame = new TableFromDatabase(p);
@@ -185,17 +180,18 @@ public class ServerConnectionHandler implements Runnable {
 				return "";
 			}
 		//	database.deleteRecord(p, patientName, id);
-			msg = "REMOVED_ENTRY: " + id + ":" + patientName;
+			msg = "REMOVED_ENTRY:" + id + ":" + patientName;
 			break;
 		case "read":
 			database.getRecords(p, patientName);
-			msg = "READ_ENTRY: " + patientName;
+			msg = "READ_ENTRY:" + patientName;
 			break;
 		case "edit":
 		//	database.updateRecord(p, id);
 		}
 
-		return null;
+		return msg;
 
 	}
+
 }

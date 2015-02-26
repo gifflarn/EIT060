@@ -4,13 +4,13 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import network.ServerConnectionHandler;
+
 import database.Database;
 import people.Doctor;
 import people.Nurse;
 import people.Patient;
 import people.Person;
-import ActionEvents.Action;
-import ActionEvents.Add;
 
 public class AuditLog {
 	
@@ -20,11 +20,11 @@ public class AuditLog {
 		//saveToFile();
 	}
 	
-	public static void saveToFile(Person p, Action a, Patient pat){
+	public static void saveToFile(Person p, Patient pat){
 		FileWriter writer = null;
 		try {
 			writer = new FileWriter(AUDIT_LOG_PATH, true);
-			writer.append(a.data(pat) + ":" + p.data());
+			writer.append(":" + p.data());
 			writer.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -47,15 +47,14 @@ public class AuditLog {
 
 		System.out.println(db.createRecord(harald, p.getName(), n.getName(), "aids"));
 		System.out.println(db.getRecords(harald, p.getName()));
-			
-		Add a = new Add(p);
-		a.execute(p,harald,n,"lth","cancer");
+
+	//	a.execute(p,harald,n,"lth","cancer");
 		
 		//RecordEntry r = new RecordEntry(harald,n,"lth", "cancer");
 		//System.out.println(p.addRecord(harald, r));
 		
 		System.out.println(harald.data());
 		
-		saveToFile(harald, a, p);
+	//	saveToFile(harald, a, p);
 	}
 }
