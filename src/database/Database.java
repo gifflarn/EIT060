@@ -1,17 +1,20 @@
 package database;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-import people.Person;
-import people.Government;
-import people.Employee;
+import logs.RecordEntry;
 import people.Doctor;
 import people.Nurse;
 import people.Patient;
-import logs.RecordEntry;
+import people.Person;
 
 /**
  * Database is a class that specifies the interface to the movie database. Uses

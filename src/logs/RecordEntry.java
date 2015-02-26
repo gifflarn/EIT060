@@ -2,9 +2,6 @@ package logs;
 
 import java.sql.Date;
 
-import people.Doctor;
-import people.Nurse;
-
 public class RecordEntry {
 	private int recordId;
 	private Date creationDate;

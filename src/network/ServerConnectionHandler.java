@@ -20,9 +20,13 @@ import javax.security.cert.X509Certificate;
 import javax.swing.JFrame;
 
 import logs.AuditLog;
-
-import database.*;
-import people.*;
+import people.Doctor;
+import people.Government;
+import people.Nurse;
+import people.Patient;
+import people.Person;
+import database.Database;
+import database.TableFromDatabase;
 
 public class ServerConnectionHandler implements Runnable {
 	private ServerSocket serverSocket = null;
@@ -61,7 +65,7 @@ public class ServerConnectionHandler implements Runnable {
 			case "Government":
 				p = new Government(info[0], "");
 			}
-			p = new Doctor("Joel Pålsson", "", info[2]);
+			p = new Doctor("Joel Pï¿½lsson", "", info[2]);
 			p2 = new Nurse("Lukas Brandt Brune", "", info[2]);
 			numConnectedClients++;
 			System.out.println("client connected");

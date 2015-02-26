@@ -20,6 +20,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+@SuppressWarnings("serial")
 public class ClientGUI extends JFrame implements ActionListener,
 		WindowListener, KeyListener {
 	private JPanel panel;
