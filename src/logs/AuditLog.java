@@ -3,6 +3,7 @@ package logs;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import network.ServerConnectionHandler;
 
@@ -41,19 +42,24 @@ public class AuditLog {
 			System.out.println("Connected established");			
 		}
 		
-		Doctor harald = new Doctor("Harald", "12345", "lth");
+		Doctor joel = new Doctor("Joel Pålsson", "12345", "lth");
 		Nurse n = new Nurse("Lukas", "43434", "lth");
-		Patient p = new Patient("Joel", "54545");
+		Patient p = new Patient("Harald Nordgren", "54545");
 
-		System.out.println(db.createRecord(harald, p.getName(), n.getName(), "aids"));
-		System.out.println(db.getRecords(harald, p.getName()));
-
-	//	a.execute(p,harald,n,"lth","cancer");
+		//System.out.println(db.createRecord(joel, p.getName(), n.getName(), "aids2"));
+		ArrayList<RecordEntry> list = db.getRecords(joel, p.getName());
 		
-		//RecordEntry r = new RecordEntry(harald,n,"lth", "cancer");
-		//System.out.println(p.addRecord(harald, r));
+		System.out.println();
+		for (RecordEntry r : list)
+			System.out.println(r.getData());
+		System.out.println();
 		
-		System.out.println(harald.data());
+		//System.out.println(db.getRecords(joel, p.getName()));
+		
+		//RecordEntry r = new RecordEntry(joel,n,"lth", "cancer");
+		//System.out.println(p.addRecord(joel, r));
+		
+		System.out.println(joel.data());
 		
 	//	saveToFile(harald, a, p);
 	}
