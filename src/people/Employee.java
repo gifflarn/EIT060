@@ -10,7 +10,7 @@ public abstract class Employee extends Person{
 		this.division = division;
 	}
 	
-	String getDivision() {
+	public String getDivision() {
 		return division;
 	}
 	
