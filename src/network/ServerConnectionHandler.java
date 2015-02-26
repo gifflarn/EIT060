@@ -1,16 +1,26 @@
 package network;
 
-import java.io.*;
-import java.net.*;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
 import java.security.KeyStore;
 
-import javax.net.*;
-import javax.net.ssl.*;
+import javax.net.ServerSocketFactory;
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLServerSocket;
+import javax.net.ssl.SSLServerSocketFactory;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.TrustManagerFactory;
 import javax.security.cert.X509Certificate;
 
-import people.Patient;
-import people.Person;
+import database.Person;
 
+import people.Patient;
 import ActionEvents.Action;
 import ActionEvents.Add;
 import ActionEvents.Read;
@@ -130,8 +140,17 @@ public class ServerConnectionHandler implements Runnable {
 
 	private String handleInput(String clientMsg, Patient p) {
 		Action a = null;
+		
+		
 		switch (clientMsg.toLowerCase()) {
 		case "add":
+			Person p
+			String patientName
+			String associatedNurse
+			String data
+			
+			createRecord(Person p, p., String associatedNurse, String data)
+			
 			a = new Add(p);
 			break;
 		case "remove":

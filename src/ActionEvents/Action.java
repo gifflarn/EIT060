@@ -1,7 +1,5 @@
 package ActionEvents;
 
-import people.Doctor;
-import people.Nurse;
 import people.Patient;
 import people.Person;
 

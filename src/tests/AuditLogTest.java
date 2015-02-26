@@ -6,12 +6,11 @@ import logs.RecordEntry;
 import org.junit.Before;
 import org.junit.Test;
 
-import ActionEvents.Action;
-import ActionEvents.Add;
-
 import people.Doctor;
 import people.Nurse;
 import people.Patient;
+import ActionEvents.Action;
+import ActionEvents.Add;
 
 public class AuditLogTest {
 	AuditLog log;

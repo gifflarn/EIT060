@@ -4,13 +4,12 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import ActionEvents.Action;
-import ActionEvents.Add;
-
 import people.Doctor;
 import people.Nurse;
 import people.Patient;
 import people.Person;
+import ActionEvents.Action;
+import ActionEvents.Add;
 
 public class AuditLog {
 	
