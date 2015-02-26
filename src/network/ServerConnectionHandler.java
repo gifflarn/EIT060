@@ -1,15 +1,25 @@
 package network;
 
-import java.io.*;
-import java.net.*;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
 import java.security.KeyStore;
 
-import javax.net.*;
-import javax.net.ssl.*;
+import javax.net.ServerSocketFactory;
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLServerSocket;
+import javax.net.ssl.SSLServerSocketFactory;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.TrustManagerFactory;
 import javax.security.cert.X509Certificate;
 
-import people.Patient;
-import people.Person;
+import database.*;
+import people.*;
 
 import ActionEvents.Action;
 import ActionEvents.Add;
@@ -19,8 +29,9 @@ import ActionEvents.Remove;
 public class ServerConnectionHandler implements Runnable {
 	private ServerSocket serverSocket = null;
 	private static int numConnectedClients = 0;
-	private Patient p;
-
+	private Database database;
+	private Person p;
+	
 	public ServerConnectionHandler(ServerSocket ss) throws IOException {
 		serverSocket = ss;
 		newListener();
@@ -34,6 +45,20 @@ public class ServerConnectionHandler implements Runnable {
 			X509Certificate cert = (X509Certificate) session
 					.getPeerCertificateChain()[0];
 			String subject = cert.getSubjectDN().getName();
+			String[] info = new String[]{subject.split("CN=")[0].split(",")[0], subject.split("OU=")[0].split(",")[0], subject.split("O=")[0].split(",")[0]};
+			switch(info[1]){
+			case "Doctor":
+				p = new Doctor(info[0], "", info[2]);
+				break;
+			case "Nurse":
+				p = new Nurse(info[0], "", info[2]);
+				break;
+			case "Patient":
+				p = new Patient(info[0], "");
+				break;
+			case "Government":
+				p = new Government(info[0], "");
+			}
 			numConnectedClients++;
 			System.out.println("client connected");
 			System.out.println("client name (cert subject DN field): "
@@ -130,8 +155,16 @@ public class ServerConnectionHandler implements Runnable {
 
 	private String handleInput(String clientMsg, Patient p) {
 		Action a = null;
+		
+		
 		switch (clientMsg.toLowerCase()) {
 		case "add":
+			String patientName = null;
+			String associatedNurse = null;
+			String data = null;
+			
+			database.createRecord(p, patientName, associatedNurse, data);
+			
 			a = new Add(p);
 			break;
 		case "remove":
