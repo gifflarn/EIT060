@@ -2,6 +2,7 @@ package database;
 
 import java.sql.*;
 import java.util.ArrayList;
+
 import people.Person;
 import people.Employee;
 import people.Doctor;
@@ -168,6 +169,7 @@ public class Database {
 	// return records;
 	// }
 
+	@SuppressWarnings("resource")
 	public String createRecord(Person person, String patientName,
 			String associatedNurse, String data) {
 		String message = null;
@@ -213,6 +215,7 @@ public class Database {
 		return message;
 	}
 
+	@SuppressWarnings("null")
 	public String recordsToString(ArrayList<Record> records) {
 		StringBuilder recordContent = null;
 		for (Record r : records) {
