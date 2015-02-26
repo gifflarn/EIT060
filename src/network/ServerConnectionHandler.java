@@ -18,9 +18,9 @@ import javax.net.ssl.SSLSocket;
 import javax.net.ssl.TrustManagerFactory;
 import javax.security.cert.X509Certificate;
 
-import database.Person;
+import database.*;
+import people.*;
 
-import people.Patient;
 import ActionEvents.Action;
 import ActionEvents.Add;
 import ActionEvents.Read;
@@ -30,6 +30,7 @@ public class ServerConnectionHandler implements Runnable {
 	private ServerSocket serverSocket = null;
 	private static int numConnectedClients = 0;
 	private Patient p;
+	private Database database;
 
 	public ServerConnectionHandler(ServerSocket ss) throws IOException {
 		serverSocket = ss;
@@ -144,12 +145,12 @@ public class ServerConnectionHandler implements Runnable {
 		
 		switch (clientMsg.toLowerCase()) {
 		case "add":
-			Person p
-			String patientName
-			String associatedNurse
-			String data
+			Person person;
+			String patientName;
+			String associatedNurse;
+			String data;
 			
-			createRecord(Person p, p., String associatedNurse, String data)
+			database.createRecord(person, patientName, associatedNurse, data);
 			
 			a = new Add(p);
 			break;
