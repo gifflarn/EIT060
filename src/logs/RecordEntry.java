@@ -15,9 +15,9 @@ public class RecordEntry {
 	private String division;
 	private String data;
 
-	public RecordEntry(int recordId, Date creationDate,
-			Date lastUpdateDate, String patient, String doctor,
-			String nurse, String division, String data) {
+	public RecordEntry(int recordId, Date creationDate, Date lastUpdateDate,
+			String patient, String doctor, String nurse, String division,
+			String data) {
 		this.recordId = recordId;
 		this.creationDate = creationDate;
 		this.lastUpdateDate = lastUpdateDate;
@@ -31,15 +31,15 @@ public class RecordEntry {
 	public int recordId() {
 		return recordId;
 	}
-	
+
 	public Date creationDate() {
 		return creationDate;
 	}
-	
+
 	public Date lastUpdateDate() {
 		return lastUpdateDate;
 	}
-	
+
 	public String getPatient() {
 		return patient;
 	}
@@ -59,9 +59,9 @@ public class RecordEntry {
 	public String getData() {
 		return data;
 	}
-
-	// public String toString(){
-	// return d + ":" + n + ":" + division +":" + data;
-	// }
+	@Override
+	public String toString() {
+		return doctor + ":" + nurse + ":" + division + ":" + data;
+	}
 
 }
