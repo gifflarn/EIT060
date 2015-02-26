@@ -4,10 +4,12 @@ import java.sql.*;
 import java.util.ArrayList;
 
 import people.Person;
+import people.Government;
 import people.Employee;
 import people.Doctor;
 import people.Nurse;
 import people.Patient;
+import logs.RecordEntry;
 
 /**
  * Database is a class that specifies the interface to the movie database. Uses
@@ -78,8 +80,8 @@ public class Database {
 		return conn != null;
 	}
 
-	public ArrayList<Record> getRecords(Person person, String patientName) {
-		ArrayList<Record> records = new ArrayList<Record>();
+	public ArrayList<RecordEntry> getRecords(Person person, String patientName) {
+		ArrayList<RecordEntry> records = new ArrayList<RecordEntry>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
@@ -112,7 +114,7 @@ public class Database {
 				rs = ps.executeQuery();
 			}
 			while (rs.next()) {
-				records.add(new Record(rs.getString("patient"), rs
+				records.add(new RecordEntry(rs.getString("patient"), rs
 						.getString("doctor"), rs.getString("nurse"), rs
 						.getString("division"), rs.getString("data")));
 			}
@@ -128,8 +130,19 @@ public class Database {
 		return records;
 	}
 
-	// public ArrayList<Record> updateRecord(Person person, Record record) {
-	// ArrayList<Record> records = new ArrayList<Record>();
+	
+	Public String updateRecord(Person person, String patientName, Record r) {
+		String message = null;
+		if (person instanceof Patient) {
+			message = "You do not have the required access rights to write to patient records";
+		} else {
+			getRecords(person, patientName);
+		}
+	
+		
+	
+	// public ArrayList<RecordEntry> updateRecord(Person person, RecordEntry record) {
+	// ArrayList<RecordEntry> records = new ArrayList<RecordEntry>();
 	// PreparedStatement ps = null;
 	// if(persontype = Doctor) {
 	// doctorName = person.getName();
@@ -163,7 +176,7 @@ public class Database {
 	// }
 	//
 	// while (rs.next()) {
-	// records.add(new Record(rs.getString("patient"), rs.getString("doctor"),
+	// records.add(new RecordEntry(rs.getString("patient"), rs.getString("doctor"),
 	// rs.getString("nurse"), rs.getString("division"), rs.getString("data")));
 	// }
 	// return records;
@@ -175,7 +188,7 @@ public class Database {
 		String message = null;
 		PreparedStatement ps = null;
 		try {
-			if (!(person instanceof Doctor)) {
+			if (!(person instanceof Govern)) {
 				message = "You do not have the required access rights to create a patient record";
 			}
 			Doctor d = (Doctor) person;
@@ -215,6 +228,51 @@ public class Database {
 		return message;
 	}
 
+	@SuppressWarnings("resource")
+	public String deleteRecord(Person person, String patientName, RecordEntry r) {
+		String message = null;
+		PreparedStatement ps = null;
+		try {
+			if (!person instanceof Doctor)) {
+				message = "You do not have the required access rights to create a patient record";
+			}
+			Doctor d = (Doctor) person;
+			String doctorName = d.getName();
+			String sql = "SELECT * FROM Records WHERE doctor = ? and patient = ?";
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, doctorName);
+			ps.setString(2, patientName);
+			ResultSet rs = ps.executeQuery();
+			if (!rs.next()) {
+				message = "You do not have the required access rights to create a record for the specified patient";
+			} else {
+				String hospitalDivision = d.getDivision();
+				sql = "INSERT INTO Records VALUES(?, ?, ?, ?, ?)";
+				ps = conn.prepareStatement(sql);
+				ps.setString(1, patientName);
+				ps.setString(2, doctorName);
+				ps.setString(3, associatedNurse);
+				ps.setString(4, hospitalDivision);
+				ps.setString(5, data);
+				int i = ps.executeUpdate();
+				if (i != 1) {
+					message = "Unable add the record to the database";
+				} else {
+					message = "The record was added to the database";
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				ps.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return message;
+	}
+	
 	@SuppressWarnings("null")
 	public String recordsToString(ArrayList<Record> records) {
 		StringBuilder recordContent = null;
@@ -227,43 +285,3 @@ public class Database {
 		}
 		return recordContent.toString();
 	}
-
-	class Record {
-		// private String date;
-		private String patient;
-		private String doctor;
-		private String nurse;
-		private String division;
-		private String data;
-
-		public Record(String patient, String doctor, String nurse,
-				String division, String data) {
-			this.patient = patient;
-			this.doctor = doctor;
-			this.nurse = nurse;
-			this.division = division;
-			this.data = data;
-		}
-
-		public String getPatient() {
-			return patient;
-		}
-
-		public String getDoctor() {
-			return doctor;
-		}
-
-		public String getNurse() {
-			return nurse;
-		}
-
-		public String getDivision() {
-			return division;
-		}
-
-		public String getData() {
-			return data;
-		}
-	}
-
-}
