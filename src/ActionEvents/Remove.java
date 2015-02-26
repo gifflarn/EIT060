@@ -17,7 +17,7 @@ public class Remove extends Action{
 
 	@Override
 	public void execute(Patient p) {
-		p.getRecords(this.p);
+		//p.getRecords(this.p);
 	}
 
 }

@@ -8,9 +8,5 @@ public class Government extends Person {
 		super(username, hashPw);
 	}
 
-	@Override
-	public String data() {
-		return username + ":Government:" + System.currentTimeMillis()/1000 + "\n";
-	}
 
 }

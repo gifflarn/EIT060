@@ -16,7 +16,7 @@ public class Read extends Action{
 
 	@Override
 	public void execute(Patient p) {
-		p.getRecords(this.p); //måste returnera
+		//p.getRecords(this.p); //måste returnera
 	}
 
 }

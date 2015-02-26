@@ -31,9 +31,9 @@ public class ClientGUI extends JFrame implements ActionListener,
 	private BufferedReader read;
 	private SSLSocket socket;
 
-	public String getPassword() {
-		String password = JOptionPane.showInputDialog("Enter password");
-		return password;
+	public String getText(String s) {
+		String text = JOptionPane.showInputDialog(s);
+		return text;
 	}
 
 	public void openConsole(BufferedReader read, PrintWriter out,
