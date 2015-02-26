@@ -8,6 +8,9 @@ import javax.net.*;
 import javax.net.ssl.*;
 import javax.security.cert.X509Certificate;
 
+import people.Doctor;
+import people.Government;
+import people.Nurse;
 import people.Patient;
 import people.Person;
 
@@ -19,7 +22,8 @@ import ActionEvents.Remove;
 public class ServerConnectionHandler implements Runnable {
 	private ServerSocket serverSocket = null;
 	private static int numConnectedClients = 0;
-	private Patient p;
+	//private Patient p;
+	private Person p;
 
 	public ServerConnectionHandler(ServerSocket ss) throws IOException {
 		serverSocket = ss;
@@ -34,6 +38,20 @@ public class ServerConnectionHandler implements Runnable {
 			X509Certificate cert = (X509Certificate) session
 					.getPeerCertificateChain()[0];
 			String subject = cert.getSubjectDN().getName();
+			String[] info = new String[]{subject.split("CN=")[0].split(",")[0], subject.split("OU=")[0].split(",")[0], subject.split("O=")[0].split(",")[0]};
+			switch(info[1]){
+			case "Doctor":
+				p = new Doctor(info[0], "", info[2]);
+				break;
+			case "Nurse":
+				p = new Nurse(info[0], "", info[2]);
+				break;
+			case "Patient":
+				p = new Patient(info[0], "");
+				break;
+			case "Government":
+				p = new Government(info[0], "");
+			}
 			numConnectedClients++;
 			System.out.println("client connected");
 			System.out.println("client name (cert subject DN field): "
