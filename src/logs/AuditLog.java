@@ -5,14 +5,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import network.ClientConnectionHandler;
-import network.ServerConnectionHandler;
-
-import database.Database;
 import people.Doctor;
 import people.Nurse;
 import people.Patient;
 import people.Person;
+import database.Database;
 
 public class AuditLog {
 	
@@ -62,6 +59,6 @@ public class AuditLog {
 		
 		System.out.println(joel.data());
 		
-	//	saveToFile(harald, a, p);
+		saveToFile(joel, "hej");
 	}
 }

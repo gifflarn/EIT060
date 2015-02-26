@@ -1,8 +1,5 @@
 package people;
 
-import java.util.ArrayList;
-
-import logs.RecordEntry;
 
 public class Patient extends Person {
 

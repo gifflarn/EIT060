@@ -1,13 +1,20 @@
 package database;
 
-import java.awt.*;
-import java.sql.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.table.*;
+import java.awt.BorderLayout;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.Statement;
+import java.util.Vector;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 import people.Person;
 
+@SuppressWarnings("serial")
 public class TableFromDatabase extends JFrame
 {
     public TableFromDatabase(Person p)
@@ -63,7 +70,8 @@ public class TableFromDatabase extends JFrame
 
         DefaultTableModel model = new DefaultTableModel(data, columnNames)
         {
-        	@Override
+        	@SuppressWarnings({ "unchecked", "rawtypes" })
+			@Override
             public Class getColumnClass(int column)
             {
                 for (int row = 0; row < getRowCount(); row++)
