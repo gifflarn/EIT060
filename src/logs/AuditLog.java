@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import database.Database;
 import people.Doctor;
 import people.Nurse;
 import people.Patient;
@@ -34,6 +35,12 @@ public class AuditLog {
 	}
 	
 	public static void main(String[] args){
+		
+		Database db = new Database();
+		if(db.openConnection("db03", "db03", "joel")) {
+			System.out.println("hej");
+		}
+		
 		
 		Doctor harald = new Doctor("Harald", "12345", "lth");
 		Nurse n = new Nurse("Lukas", "43434", "lth");
