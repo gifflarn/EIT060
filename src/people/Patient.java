@@ -105,7 +105,7 @@ public class Patient extends Person {
 	// }
 
 	public boolean addRecord(Person p, Record record) {
-		switch (p.getClass().getName()) {
+		switch (p.getClass().getSimpleName()) {
 		case "Doctor":
 			if (doctors.contains(p)) {
 				records.add(record);
