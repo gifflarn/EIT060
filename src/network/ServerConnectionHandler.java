@@ -18,16 +18,8 @@ import javax.net.ssl.SSLSocket;
 import javax.net.ssl.TrustManagerFactory;
 import javax.security.cert.X509Certificate;
 
-<<<<<<< HEAD
 import database.*;
 import people.*;
-=======
-import people.Doctor;
-import people.Government;
-import people.Nurse;
-import people.Patient;
-import people.Person;
->>>>>>> 2fd15b7d80a51605d23c954d61fc9dcb31269517
 
 import ActionEvents.Action;
 import ActionEvents.Add;
@@ -37,14 +29,9 @@ import ActionEvents.Remove;
 public class ServerConnectionHandler implements Runnable {
 	private ServerSocket serverSocket = null;
 	private static int numConnectedClients = 0;
-<<<<<<< HEAD
-	private Patient p;
 	private Database database;
-=======
-	//private Patient p;
 	private Person p;
->>>>>>> 2fd15b7d80a51605d23c954d61fc9dcb31269517
-
+	
 	public ServerConnectionHandler(ServerSocket ss) throws IOException {
 		serverSocket = ss;
 		newListener();
@@ -172,12 +159,11 @@ public class ServerConnectionHandler implements Runnable {
 		
 		switch (clientMsg.toLowerCase()) {
 		case "add":
-			Person person;
-			String patientName;
-			String associatedNurse;
-			String data;
+			String patientName = null;
+			String associatedNurse = null;
+			String data = null;
 			
-			database.createRecord(person, patientName, associatedNurse, data);
+			database.createRecord(p, patientName, associatedNurse, data);
 			
 			a = new Add(p);
 			break;
