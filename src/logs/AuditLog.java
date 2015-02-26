@@ -3,14 +3,16 @@ package logs;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+
+import network.ClientConnectionHandler;
+import network.ServerConnectionHandler;
 
 import database.Database;
 import people.Doctor;
 import people.Nurse;
 import people.Patient;
 import people.Person;
-import ActionEvents.Action;
-import ActionEvents.Add;
 
 public class AuditLog {
 	
@@ -20,11 +22,11 @@ public class AuditLog {
 		//saveToFile();
 	}
 	
-	public static void saveToFile(Person p, Action a, Patient pat){
+	public static void saveToFile(Person p, String msg){
 		FileWriter writer = null;
 		try {
 			writer = new FileWriter(AUDIT_LOG_PATH, true);
-			writer.append(a.data(pat) + ":" + p.data());
+			writer.append(msg + ":" + p.data());
 			writer.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -38,23 +40,28 @@ public class AuditLog {
 		
 		Database db = new Database();
 		if(db.openConnection("db03", "db03", "joel")) {
-			System.out.println("hej");
+			System.out.println("Connected established");			
 		}
 		
-		
-		Doctor harald = new Doctor("Harald", "12345", "lth");
+		Doctor joel = new Doctor("Joel Pålsson", "12345", "lth");
 		Nurse n = new Nurse("Lukas", "43434", "lth");
-		Patient p = new Patient("Joel", "54545");
+		Patient p = new Patient("Harald Nordgren", "54545");
 
+		//System.out.println(db.createRecord(joel, p.getName(), n.getName(), "aids2"));
+		ArrayList<RecordEntry> list = db.getRecords(joel, p.getName());
 		
-		Add a = new Add(p);
-		a.execute(p,harald,n,"lth","cancer");
+		System.out.println();
+		for (RecordEntry r : list)
+			System.out.println(r.getData());
+		System.out.println();
 		
-		//RecordEntry r = new RecordEntry(harald,n,"lth", "cancer");
-		//System.out.println(p.addRecord(harald, r));
+		//System.out.println(db.getRecords(joel, p.getName()));
 		
-		System.out.println(harald.data());
+		//RecordEntry r = new RecordEntry(joel,n,"lth", "cancer");
+		//System.out.println(p.addRecord(joel, r));
 		
-		saveToFile(harald, a, p);
+		System.out.println(joel.data());
+		
+	//	saveToFile(harald, a, p);
 	}
 }

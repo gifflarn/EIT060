@@ -85,7 +85,7 @@ public class Database {
 	public Connection getConnection() {
 		return conn;
 	}
-	
+
 	public ArrayList<RecordEntry> getRecords(Person person, String patientName) {
 		ArrayList<RecordEntry> records = new ArrayList<RecordEntry>();
 		PreparedStatement ps = null;
@@ -94,22 +94,22 @@ public class Database {
 			if (person instanceof Doctor) {
 				Doctor d = (Doctor) person;
 				String doctorName = d.getName();
-				String hospitalDistrict = d.getDivision();
-				String sql = "SELECT * FROM Records WHERE patient = ? AND doctor = ? OR district = ?";
+				String hospitalDivision = d.getDivision();
+				String sql = "SELECT * FROM Records WHERE patient = ? AND doctor = ? OR division = ?";
 				ps = conn.prepareStatement(sql);
 				ps.setString(1, patientName);
 				ps.setString(2, doctorName);
-				ps.setString(3, hospitalDistrict);
+				ps.setString(3, hospitalDivision);
 				rs = ps.executeQuery();
 			} else if (person instanceof Nurse) {
 				Nurse n = (Nurse) person;
 				String nurseName = n.getName();
-				String hospitalDistrict = n.getDivision();
-				String sql = "SELECT * FROM Records WHERE patient = ? AND nurse = ? OR district = ?";
+				String hospitalDivision = n.getDivision();
+				String sql = "SELECT * FROM Records WHERE patient = ? AND nurse = ? OR division = ?";
 				ps = conn.prepareStatement(sql);
 				ps.setString(1, patientName);
 				ps.setString(2, nurseName);
-				ps.setString(3, hospitalDistrict);
+				ps.setString(3, hospitalDivision);
 				rs = ps.executeQuery();
 			} else if (person instanceof Patient) {
 				Patient p = (Patient) person;
@@ -120,9 +120,11 @@ public class Database {
 				rs = ps.executeQuery();
 			}
 			while (rs.next()) {
-				records.add(new RecordEntry(
-						rs.getInt("recordId"), rs.getDate("creationDate"), rs.getDate("lastUpdateDate"), rs.getString("patient"), rs
-		.getString("doctor"), rs.getString("nurse"), rs.getString("division"), rs.getString("data")));
+				records.add(new RecordEntry(rs.getInt("recordId"), rs
+						.getDate("creationDate"), rs.getDate("lastUpdateDate"),
+						rs.getString("patient"), rs.getString("doctor"), rs
+								.getString("nurse"), rs.getString("division"),
+						rs.getString("data")));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -137,56 +139,56 @@ public class Database {
 	}
 
 	@SuppressWarnings("resource")
-	public String createRecord(Person person, String patientName,
-			String associatedNurse, String data) {
+	public String createRecord(Person person, String patientName, String associatedNurse, String data) {
 		String message = null;
-		PreparedStatement ps = null;
-		try {
-			if (!(person instanceof Government)) {
-				message = "You do not have the required access rights to create a patient record";
-			}
-			Doctor d = (Doctor) person;
-			String doctorName = d.getName();
-			String sql = "SELECT * FROM Records WHERE doctor = ? and patient = ?";
-			ps = conn.prepareStatement(sql);
-			ps.setString(1, doctorName);
-			ps.setString(2, patientName);
-			ResultSet rs = ps.executeQuery();
-			if (!rs.next()) {
-				message = "You do not have the required access rights to create a record for the specified patient";
-			} else {
-				DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-				Date creationDate = new Date(0);
-				Date lastUpdateDate = new Date(0);
-				String hospitalDivision = d.getDivision();
-				sql = "INSERT INTO Records VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
-				ps = conn.prepareStatement(sql);
-				ps.setInt(1, 0);
-				ps.setDate(2, creationDate);
-				ps.setDate(3, lastUpdateDate);
-				ps.setString(4, patientName);
-				ps.setString(5, doctorName);
-				ps.setString(6, associatedNurse);
-				ps.setString(7, hospitalDivision);
-				ps.setString(7, data);
-				int i = ps.executeUpdate();
-				if (i != 1) {
-					message = "Unable add the record to the database";
-				} else {
-					message = "The record was added to the database";
-				}
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
+		if (!(person instanceof Doctor)) {
+			message = "You do not have the required access rights to create a patient record";
+		} else {
+			PreparedStatement ps = null;
 			try {
-				ps.close();
+				Doctor d = (Doctor) person;
+				String doctorName = d.getName();
+				String sql = "SELECT * FROM Records WHERE doctor = ? and patient = ?";
+				ps = conn.prepareStatement(sql);
+				ps.setString(1, doctorName);
+				ps.setString(2, patientName);
+				ResultSet rs = ps.executeQuery();
+				if (!rs.next()) {
+					message = "You do not have the required access rights to create a record for the specified patient";
+				} else {
+					DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+					Date creationDate = new Date(0);
+					Date lastUpdateDate = new Date(0);
+					String hospitalDivision = d.getDivision();
+					sql = "INSERT INTO Records VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+					ps = conn.prepareStatement(sql);
+					ps.setInt(1, 0);
+					ps.setDate(2, creationDate);
+					ps.setDate(3, lastUpdateDate);
+					ps.setString(4, patientName);
+					ps.setString(5, doctorName);
+					ps.setString(6, associatedNurse);
+					ps.setString(7, hospitalDivision);
+					ps.setString(8, data);
+					int i = ps.executeUpdate();
+					if (i != 1) {
+						message = "Unable add the record to the database";
+					} else {
+						message = "The record was added to the database";
+					}
+				}
 			} catch (SQLException e) {
 				e.printStackTrace();
+			} finally {
+				try {
+					ps.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		return message;
-	}
+	}	
 
 	@SuppressWarnings("null")
 	public String recordsToString(ArrayList<RecordEntry> records) {
@@ -201,59 +203,61 @@ public class Database {
 		return recordContent.toString();
 	}
 
-	
-//Public String updateRecord(Person person, String patientName, Record r) {
-//	String message = null;
-//	if (person instanceof Patient) {
-//		message = "You do not have the required access rights to write to patient records";
-//	} else {
-//		getRecords(person, patientName);
-//	}
+	// Public String updateRecord(Person person, String patientName, Record r) {
+	// String message = null;
+	// if (person instanceof Patient) {
+	// message =
+	// "You do not have the required access rights to write to patient records";
+	// } else {
+	// getRecords(person, patientName);
+	// }
 
+	// @SuppressWarnings("resource")
+	// public String deleteRecord(Person person, String patientName, int
+	// recordEntryNbr) {
+	// String message = null;
+	// PreparedStatement ps = null;
+	// try {
+	// if (!(person instanceof Government)) {
+	// message =
+	// "You do not have the required access rights to delete patient records";
+	// }
+	// Government g = (Government)person;
+	// String doctorName = g.getName();
+	// String sql = "SELECT * FROM Records WHERE doctor = ? and patient = ?";
+	// ps = conn.prepareStatement(sql);
+	// ps.setString(1, doctorName);
+	// ps.setString(2, patientName);
+	// ResultSet rs = ps.executeQuery();
+	// if (!rs.next()) {
+	// message =
+	// "You do not have the required access rights to create a record for the specified patient";
+	// } else {
+	// String hospitalDivision = d.getDivision();
+	// sql = "INSERT INTO Records VALUES(?, ?, ?, ?, ?)";
+	// ps = conn.prepareStatement(sql);
+	// ps.setString(1, patientName);
+	// ps.setString(2, doctorName);
+	// ps.setString(3, associatedNurse);
+	// ps.setString(4, hospitalDivision);
+	// ps.setString(5, data);
+	// int i = ps.executeUpdate();
+	// if (i != 1) {
+	// message = "Unable add the record to the database";
+	// } else {
+	// message = "The record was added to the database";
+	// }
+	// }
+	// } catch (SQLException e) {
+	// e.printStackTrace();
+	// } finally {
+	// try {
+	// ps.close();
+	// } catch (SQLException e) {
+	// e.printStackTrace();
+	// }
+	// }
+	// return message;
+	// }
 
-//	@SuppressWarnings("resource")
-//	public String deleteRecord(Person person, String patientName, int recordEntryNbr) {
-//		String message = null;
-//		PreparedStatement ps = null;
-//		try {
-//			if (!(person instanceof Government)) {
-//				message = "You do not have the required access rights to delete patient records";
-//			}
-//			Government g = (Government)person;
-//			String doctorName = g.getName();
-//			String sql = "SELECT * FROM Records WHERE doctor = ? and patient = ?";
-//			ps = conn.prepareStatement(sql);
-//			ps.setString(1, doctorName);
-//			ps.setString(2, patientName);
-//			ResultSet rs = ps.executeQuery();
-//			if (!rs.next()) {
-//				message = "You do not have the required access rights to create a record for the specified patient";
-//			} else {
-//				String hospitalDivision = d.getDivision();
-//				sql = "INSERT INTO Records VALUES(?, ?, ?, ?, ?)";
-//				ps = conn.prepareStatement(sql);
-//				ps.setString(1, patientName);
-//				ps.setString(2, doctorName);
-//				ps.setString(3, associatedNurse);
-//				ps.setString(4, hospitalDivision);
-//				ps.setString(5, data);
-//				int i = ps.executeUpdate();
-//				if (i != 1) {
-//					message = "Unable add the record to the database";
-//				} else {
-//					message = "The record was added to the database";
-//				}
-//			}
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		} finally {
-//			try {
-//				ps.close();
-//			} catch (SQLException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//		return message;
-//	}
-	
 }

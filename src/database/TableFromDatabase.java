@@ -15,7 +15,7 @@ public class TableFromDatabase extends JFrame
         Vector<Object> columnNames = new Vector<Object>();
         Vector<Object> data = new Vector<Object>();
         Database db = new Database();
-		db.openConnection("hospital", "db03", "joel");
+		db.openConnection("db03", "db03", "joel");
 
         try
         {
@@ -87,6 +87,12 @@ public class TableFromDatabase extends JFrame
         JPanel buttonPanel = new JPanel();
         getContentPane().add( buttonPanel, BorderLayout.SOUTH );
     }
-
-
+//
+//    public static void main(String[] args)
+//    {
+//        TableFromDatabase frame = new TableFromDatabase();
+//        frame.setDefaultCloseOperation( EXIT_ON_CLOSE );
+//        frame.pack();
+//        frame.setVisible(true);
+//    }
 }
