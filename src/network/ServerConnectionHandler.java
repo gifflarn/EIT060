@@ -42,9 +42,9 @@ public class ServerConnectionHandler implements Runnable {
 					.getPeerCertificateChain()[0];
 			String subject = cert.getSubjectDN().getName();
 			String[] info = new String[] {
-					subject.split("CN=")[0].split(",")[0],
-					subject.split("OU=")[0].split(",")[0],
-					subject.split("O=")[0].split(",")[0] };
+					subject.split("CN=")[1].split(",")[0],
+					subject.split("OU=")[1].split(",")[0],
+					subject.split("O=")[1].split(",")[0] };
 			switch (info[1]) {
 			case "Doctor":
 				p = new Doctor(info[0], "", info[2]);
