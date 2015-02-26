@@ -94,22 +94,22 @@ public class Database {
 			if (person instanceof Doctor) {
 				Doctor d = (Doctor) person;
 				String doctorName = d.getName();
-				String hospitalDistrict = d.getDivision();
-				String sql = "SELECT * FROM Records WHERE patient = ? AND doctor = ? OR district = ?";
+				String hospitalDivision = d.getDivision();
+				String sql = "SELECT * FROM Records WHERE patient = ? AND doctor = ? OR division = ?";
 				ps = conn.prepareStatement(sql);
 				ps.setString(1, patientName);
 				ps.setString(2, doctorName);
-				ps.setString(3, hospitalDistrict);
+				ps.setString(3, hospitalDivision);
 				rs = ps.executeQuery();
 			} else if (person instanceof Nurse) {
 				Nurse n = (Nurse) person;
 				String nurseName = n.getName();
-				String hospitalDistrict = n.getDivision();
-				String sql = "SELECT * FROM Records WHERE patient = ? AND nurse = ? OR district = ?";
+				String hospitalDivision = n.getDivision();
+				String sql = "SELECT * FROM Records WHERE patient = ? AND nurse = ? OR division = ?";
 				ps = conn.prepareStatement(sql);
 				ps.setString(1, patientName);
 				ps.setString(2, nurseName);
-				ps.setString(3, hospitalDistrict);
+				ps.setString(3, hospitalDivision);
 				rs = ps.executeQuery();
 			} else if (person instanceof Patient) {
 				Patient p = (Patient) person;
@@ -142,7 +142,7 @@ public class Database {
 		String message = null;
 		PreparedStatement ps = null;
 		try {
-			if (!(person instanceof Government)) {
+			if (!(person instanceof Doctor)) {
 				message = "You do not have the required access rights to create a patient record";
 			}
 			Doctor d = (Doctor) person;

@@ -38,15 +38,16 @@ public class AuditLog {
 		
 		Database db = new Database();
 		if(db.openConnection("db03", "db03", "joel")) {
-			System.out.println("hej");
+			System.out.println("Connected established");			
 		}
-		
 		
 		Doctor harald = new Doctor("Harald", "12345", "lth");
 		Nurse n = new Nurse("Lukas", "43434", "lth");
 		Patient p = new Patient("Joel", "54545");
 
-		
+		System.out.println(db.createRecord(harald, p.getName(), n.getName(), "aids"));
+		System.out.println(db.getRecords(harald, p.getName()));
+			
 		Add a = new Add(p);
 		a.execute(p,harald,n,"lth","cancer");
 		
