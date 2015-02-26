@@ -18,12 +18,12 @@ public class Add extends Action{
 
 	@Override
 	public void execute(Patient p) {
-		p.addRecord(this.p, new RecordEntry(null, null, null, null));
+	//	p.addRecord(this.p, new RecordEntry(null, null, null, null));
 		
 	}
 	
 	public void execute(Patient p, Doctor d, Nurse n, String division, String data) {
-		System.out.println(p.addRecord(d, new RecordEntry(d, n, division, data)));
+		//System.out.println(p.addRecord(d, new RecordEntry(d, n, division, data)));
 	}
 
 }

@@ -38,7 +38,6 @@ public class AuditLog {
 		Doctor harald = new Doctor("Harald", "12345", "lth");
 		Nurse n = new Nurse("Lukas", "43434", "lth");
 		Patient p = new Patient("Joel", "54545");
-		p.addDoctor(harald);
 
 		
 		Add a = new Add(p);
@@ -47,7 +46,6 @@ public class AuditLog {
 		//RecordEntry r = new RecordEntry(harald,n,"lth", "cancer");
 		//System.out.println(p.addRecord(harald, r));
 		
-		System.out.println(p.getRecords(harald));
 		System.out.println(harald.data());
 		
 		saveToFile(harald, a, p);

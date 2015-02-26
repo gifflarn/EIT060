@@ -1,5 +1,6 @@
 package network;
 
+import java.awt.Frame;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -17,6 +18,7 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.TrustManagerFactory;
 import javax.security.cert.X509Certificate;
+import javax.swing.JFrame;
 
 import database.*;
 import people.*;
@@ -31,7 +33,7 @@ public class ServerConnectionHandler implements Runnable {
 	private static int numConnectedClients = 0;
 	private Database database;
 	private Person p;
-	
+
 	public ServerConnectionHandler(ServerSocket ss) throws IOException {
 		serverSocket = ss;
 		newListener();
@@ -45,8 +47,11 @@ public class ServerConnectionHandler implements Runnable {
 			X509Certificate cert = (X509Certificate) session
 					.getPeerCertificateChain()[0];
 			String subject = cert.getSubjectDN().getName();
-			String[] info = new String[]{subject.split("CN=")[0].split(",")[0], subject.split("OU=")[0].split(",")[0], subject.split("O=")[0].split(",")[0]};
-			switch(info[1]){
+			String[] info = new String[] {
+					subject.split("CN=")[0].split(",")[0],
+					subject.split("OU=")[0].split(",")[0],
+					subject.split("O=")[0].split(",")[0] };
+			switch (info[1]) {
 			case "Doctor":
 				p = new Doctor(info[0], "", info[2]);
 				break;
@@ -75,10 +80,9 @@ public class ServerConnectionHandler implements Runnable {
 			String clientMsg = null;
 			while ((clientMsg = in.readLine()) != null) {
 				System.out.println("received '" + clientMsg + "' from client");
-				if (clientMsg.split(" ").length < 2) {
+				if (clientMsg.split(" ").length < 1) {
 					continue;
 				}
-				Patient p = new Patient(clientMsg.split(" ")[1], "");
 				out.println(handleInput(clientMsg.split(" ")[0], p));
 				out.flush();
 			}
@@ -153,29 +157,43 @@ public class ServerConnectionHandler implements Runnable {
 		return null;
 	}
 
-	private String handleInput(String clientMsg, Patient p) {
-		Action a = null;
-		
-		
+	private String handleInput(String clientMsg, Person p) {
+		String msg = "";
+		int id;
+
+		String patientName = new ClientGUI().getText("Enter Patient's Name :");
+
 		switch (clientMsg.toLowerCase()) {
 		case "add":
-			String patientName = null;
-			String associatedNurse = null;
-			String data = null;
-			
+			String associatedNurse = new ClientGUI()
+					.getText("Enter Nurse's Name :");
+			String data = new ClientGUI().getText("Enter Additional Data:");
+
 			database.createRecord(p, patientName, associatedNurse, data);
-			
-			a = new Add(p);
+			msg = "ADDED_ENTRY: " + patientName;
 			break;
 		case "remove":
-			a = new Remove(p);
+			TableFromDatabase frame = new TableFromDatabase(p);
+			frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+	        frame.pack();
+	        frame.setVisible(true);
+			try {
+				id = Integer.valueOf(new ClientGUI()
+						.getText("Enter the ID you wish to delete: "));
+			} catch (NumberFormatException e) {
+				return "";
+			}
+			database.deleteRecord(p, patientName, id);
+			msg = "REMOVED_ENTRY: " + id + ":" + patientName;
 			break;
 		case "read":
-			a = new Read(p);
+			database.getRecords(p, patientName);
+			msg = "READ_ENTRY: " + patientName;
 			break;
+		case "edit":
+		//	database.updateRecord(p, id);
 		}
 
-		a.execute(p);
 		return null;
 
 	}

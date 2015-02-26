@@ -34,7 +34,7 @@ public class ClientConnectionHandler {
 		try { /* set up a key manager for client authentication */
 			SSLSocketFactory factory = null;
 			try {
-				char[] password = gui.getPassword().toCharArray();
+				char[] password = gui.getText("Enter Password: ").toCharArray();
 				
 				
 				KeyStore ks = KeyStore.getInstance("JKS");

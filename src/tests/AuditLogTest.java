@@ -27,9 +27,9 @@ public class AuditLogTest {
 		Nurse n = new Nurse("Lukas", "43434", "lth");
 		Patient p = new Patient("Joel", "54545");
 		Action a = new Add(p);
-		p.addDoctor(harald);
+	//	p.addDoctor(harald);
 		RecordEntry r = new RecordEntry(harald,n,"lth", "cancer");
-		p.addRecord(harald, r);
+		//p.addRecord(harald, r);
 		
 		
 		AuditLog.saveToFile(p, a, p);
