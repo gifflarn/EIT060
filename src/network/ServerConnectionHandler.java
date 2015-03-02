@@ -54,19 +54,19 @@ public class ServerConnectionHandler implements Runnable {
 					subject.split("O=")[1].split(",")[0] };
 			switch (info[1]) {
 			case "Doctor":
-				p = new Doctor(info[0], "", info[2]);
+				p = new Doctor(info[0], info[2]);
 				break;
 			case "Nurse":
-				p = new Nurse(info[0], "", info[2]);
+				p = new Nurse(info[0], info[2]);
 				break;
 			case "Patient":
-				p = new Patient(info[0], "");
+				p = new Patient(info[0]);
 				break;
 			case "Government":
-				p = new Government(info[0], "");
+				p = new Government(info[0]);
 			}
-			p = new Doctor("Joel Pï¿½lsson", "", info[2]);
-			p2 = new Nurse("Lukas Brandt Brune", "", info[2]);
+			p = new Doctor("Joel Pålsson",info[2]);
+			p2 = new Nurse("Lukas Brandt Brune",info[2]);
 			numConnectedClients++;
 			System.out.println("client connected");
 			System.out.println("client name (cert subject DN field): "
@@ -164,11 +164,12 @@ public class ServerConnectionHandler implements Runnable {
 		int id;
 		database = new Database();
 		database.openConnection("db03", "db03", "joel");
-		String patientName = new ClientGUI().getText("Enter Patient's Name :");
+		String patientName = "";
 		String msg = "";
 
 		switch (clientMsg.toLowerCase()) {
 		case "add":
+			patientName = new ClientGUI().getText("Enter Patient's Name :");
 			String associatedNurse = new ClientGUI()
 					.getText("Enter Nurse's Name :");
 			String data = new ClientGUI().getText("Enter Additional Data:");
@@ -186,18 +187,25 @@ public class ServerConnectionHandler implements Runnable {
 				id = Integer.valueOf(new ClientGUI()
 						.getText("Enter the ID you wish to delete: "));
 			} catch (NumberFormatException e) {
-				return "";
+				return "Not a valid number";
 			}
-		//	database.deleteRecord(p, patientName, id);
-			msg = "REMOVED_ENTRY:" + id + ":" + patientName;
+			database.deleteRecord(p, id);
+			msg = "REMOVED_ENTRY:" + id;
 			break;
 		case "read":
-			System.out.println(database.getRecords(p, patientName));
+			patientName = new ClientGUI().getText("Enter Patient's Name :");
 			System.out.println(database.recordsToString(database.getRecords(p, patientName)));
 			msg = "READ_ENTRY:" + patientName;
 			break;
 		case "edit":
-		//	database.updateRecord(p, id);
+			try {
+				id = Integer.valueOf(new ClientGUI()
+						.getText("Enter the ID you wish to delete: "));
+			} catch (NumberFormatException e) {
+				return "Not a valid number";
+			}
+			database.editRecord(p, patientName, id);
+			default: return msg = "Invalid Command";
 		}
 		AuditLog.saveToFile(p, patientName);
 		return msg;

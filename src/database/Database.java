@@ -90,7 +90,7 @@ public class Database {
 		return conn;
 	}
 
-	@SuppressWarnings({ "resource", "finally" })
+	@SuppressWarnings({ "finally" })
 	public String createRecord(Person person, String patientName, String associatedNurse, String data) {
 		String message = null;
 		if (!(person instanceof Doctor)) {
@@ -191,7 +191,7 @@ public class Database {
 	}
 
 	@SuppressWarnings("finally")
-	public String updateRecord(Person person, String patientName, int recordId) {
+	public String editRecord(Person person, String patientName, int recordId) {
 		String message = null;
 		if (person instanceof Patient) {    		// funkar (! instanceof  Employee) ?
 			return message = "You do not have the required access rights to write to patient records";
@@ -266,9 +266,9 @@ public class Database {
 		}
 	}
 	
-	@SuppressWarnings("null")
+
 	public String recordsToString(ArrayList<RecordEntry> records) {
-		StringBuilder recordContent = null;
+		StringBuilder recordContent = new StringBuilder("");
 		for (RecordEntry r : records) {
 			recordContent.append("Patient name: " + r.getPatient() + "\n"
 					+ "Doctor: " + r.getDoctor() + "\n" + "Assisting nurse: "
