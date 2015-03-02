@@ -202,12 +202,18 @@ public class ServerConnectionHandler implements Runnable {
 			msg = "READ_ENTRY:" + patientName;
 			break;
 		case "edit":
+			patientName = new ClientGUI().getText("Enter Patient's Name :");
+			TableFromDatabase frame2 = new TableFromDatabase(patientName);
+			frame2.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+	        frame2.pack();
+	        frame2.setVisible(true);
 			try {
 				id = Integer.valueOf(new ClientGUI()
-						.getText("Enter the ID you wish to delete: "));
+						.getText("Enter the ID you wish to edit: "));
 			} catch (NumberFormatException e) {
 				return "Not a valid number";
 			}
+			frame2.dispose();
 			database.editRecord(p, patientName, id);
 			default: return msg = "Invalid Command";
 		}
