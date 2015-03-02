@@ -17,7 +17,7 @@ import people.Person;
 
 @SuppressWarnings("serial")
 public class TableFromDatabase extends JFrame {
-	public TableFromDatabase(Person p) {
+	public TableFromDatabase(String patientName) {
 		Vector<Object> columnNames = new Vector<Object>();
 		Vector<Object> data = new Vector<Object>();
 		Database db = new Database();
@@ -30,7 +30,7 @@ public class TableFromDatabase extends JFrame {
 
 			String sql = "SELECT * FROM Records WHERE patient = ?";
 			PreparedStatement ps = db.getConnection().prepareStatement(sql);
-			ps.setString(1, p.getName());
+			ps.setString(1, patientName);
 			ResultSet rs = ps.executeQuery();
 			ResultSetMetaData md = rs.getMetaData();
 			int columns = md.getColumnCount();

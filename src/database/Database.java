@@ -254,7 +254,7 @@ public class Database {
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
-				message = "Unable add the record to the database";
+				message = "Unable to delete the record from the database";
 			} finally {
 				try {
 					ps.close();

@@ -34,6 +34,7 @@ public class ServerConnectionHandler implements Runnable {
 	private Database database;
 	private Person p;
 	private Person p2;
+	private Person p3;
 
 	public ServerConnectionHandler(ServerSocket ss) throws IOException {
 		serverSocket = ss;
@@ -66,6 +67,7 @@ public class ServerConnectionHandler implements Runnable {
 				p = new Government(info[0]);
 			}
 			p = new Doctor("Joel Pålsson",info[2]);
+			p3 = new Government("SocialStyrelsen");
 			p2 = new Nurse("Lukas Brandt Brune",info[2]);
 			numConnectedClients++;
 			System.out.println("client connected");
@@ -86,7 +88,7 @@ public class ServerConnectionHandler implements Runnable {
 				if (clientMsg.split(" ").length < 1) {
 					continue;
 				}
-				out.println(handleInput(clientMsg.split(" ")[0], p));
+				out.println(handleInput(clientMsg.split(" ")[0], p3));
 				out.flush();
 			}
 			in.close();
@@ -179,7 +181,8 @@ public class ServerConnectionHandler implements Runnable {
 			
 			break;
 		case "remove":
-			TableFromDatabase frame = new TableFromDatabase(p);
+			patientName = new ClientGUI().getText("Enter Patient's Name :");
+			TableFromDatabase frame = new TableFromDatabase(patientName);
 			frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 	        frame.pack();
 	        frame.setVisible(true);
@@ -189,6 +192,7 @@ public class ServerConnectionHandler implements Runnable {
 			} catch (NumberFormatException e) {
 				return "Not a valid number";
 			}
+			frame.dispose();
 			database.deleteRecord(p, id);
 			msg = "REMOVED_ENTRY:" + id;
 			break;
