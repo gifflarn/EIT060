@@ -195,7 +195,7 @@ public class ServerConnectionHandler implements Runnable {
 			msg = "REMOVED_ENTRY:" + id;
 			break;
 		case "read":
-			System.out.println(database.recordsToString(database.getRecords(p, patientName)));
+			System.out.println(database.recordsToString(database.getRecords(p, patientName), patientName));
 			msg = "READ_ENTRY:" + patientName;
 			break;
 		case "edit":

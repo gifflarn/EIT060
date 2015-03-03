@@ -270,9 +270,12 @@ public class Database {
 	}
 	
 	@SuppressWarnings("null")
-	public String recordsToString(ArrayList<RecordEntry> records) {
+	public String recordsToString(ArrayList<RecordEntry> records, String PatientName) {
 		StringBuilder recordContent = new StringBuilder();
 		for (RecordEntry r : records) {
+			if(!PatientName.equals(r.getPatient())){
+				continue;
+			}
 			recordContent.append("Patient name: " + r.getPatient() + "\n"
 					+ "Doctor: " + r.getDoctor() + "\n" + "Assisting nurse: "
 					+ r.getNurse() + "\n" + "Hospital division: "
