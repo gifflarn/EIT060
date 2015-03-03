@@ -153,7 +153,7 @@ public class Database {
 			String hospitalDivision = null;
 			String sql = null;
 			PreparedStatement ps = null;
-			ResultSet rs = null;
+			int rs = -1;
 			try {
 				if (person instanceof Doctor) {
 					Doctor d = (Doctor) person;
@@ -170,14 +170,14 @@ public class Database {
 				ps.setString(3, patientName);
 				ps.setString(4, name);
 				ps.setString(5, hospitalDivision);
-				rs = ps.executeQuery();
-				if (!rs.next()) {
+				rs = ps.executeUpdate();
+				if (rs == -1) {
 					message = "You do not have the required access rights to edit the selected record";
 				} else {
 					message = "The record was successfully updated";
 				}
 			} catch (SQLException e) {
-				e.printStackTrace();
+				e.printStackTrace();	
 				message = "Unable add the record to the database";
 			} finally {
 				try {

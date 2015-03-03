@@ -212,6 +212,8 @@ public class ServerConnectionHandler implements Runnable {
 			frame2.dispose();
 			String editData = new ClientGUI().getText("Enter the new data: ");
 			database.editRecord(p, patientName, id, editData);
+			msg = "EDITED_ENTRY:" + patientName + "WITH_NEW_DATA:" + editData;
+			break;
 			default: return msg = "Invalid Command";
 		}
 		AuditLog.saveToFile(p, patientName);
