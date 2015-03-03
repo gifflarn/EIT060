@@ -88,7 +88,7 @@ public class ServerConnectionHandler implements Runnable {
 				if (clientMsg.split(" ").length < 1) {
 					continue;
 				}
-				out.println(handleInput(clientMsg.split(" ")[0], p3));
+				out.println(handleInput(clientMsg.split(" ")[0], p));
 				out.flush();
 			}
 			in.close();
@@ -166,12 +166,11 @@ public class ServerConnectionHandler implements Runnable {
 		int id;
 		database = new Database();
 		database.openConnection("db03", "db03", "joel");
-		String patientName = "";
+		String patientName = new ClientGUI().getText("Enter Patient's Name :");
 		String msg = "";
 
 		switch (clientMsg.toLowerCase()) {
 		case "add":
-			patientName = new ClientGUI().getText("Enter Patient's Name :");
 			String associatedNurse = new ClientGUI()
 					.getText("Enter Nurse's Name :");
 			String data = new ClientGUI().getText("Enter Additional Data:");
@@ -181,7 +180,6 @@ public class ServerConnectionHandler implements Runnable {
 			
 			break;
 		case "remove":
-			patientName = new ClientGUI().getText("Enter Patient's Name :");
 			TableFromDatabase frame = new TableFromDatabase(patientName);
 			frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 	        frame.pack();
@@ -197,12 +195,10 @@ public class ServerConnectionHandler implements Runnable {
 			msg = "REMOVED_ENTRY:" + id;
 			break;
 		case "read":
-			patientName = new ClientGUI().getText("Enter Patient's Name :");
 			System.out.println(database.recordsToString(database.getRecords(p, patientName)));
 			msg = "READ_ENTRY:" + patientName;
 			break;
 		case "edit":
-			patientName = new ClientGUI().getText("Enter Patient's Name :");
 			TableFromDatabase frame2 = new TableFromDatabase(patientName);
 			frame2.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 	        frame2.pack();
@@ -214,7 +210,8 @@ public class ServerConnectionHandler implements Runnable {
 				return "Not a valid number";
 			}
 			frame2.dispose();
-			database.editRecord(p, patientName, id);
+			String editData = new ClientGUI().getText("Enter the new data: ");
+			database.editRecord(p, patientName, id, editData);
 			default: return msg = "Invalid Command";
 		}
 		AuditLog.saveToFile(p, patientName);
