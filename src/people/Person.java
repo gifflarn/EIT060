@@ -1,25 +1,28 @@
 package people;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 
 
 public abstract class Person {
 	protected String username;
-	protected String hashPw;
 	protected String fullName;
 	
-	protected Person(String username, String hashPw){
+	protected Person(String username){
 		this.username = username;
-		this.hashPw = hashPw;
 	}
 	
-	protected Person(String username, String hashPw, String fullName){
+	protected Person(String username, String fullName){
 		this.username = username;
-		this.hashPw = hashPw;
 		this.fullName = fullName;
 	}
 
 	public String data() {
-		return username + ":" + this.getClass().getSimpleName() + ":" + System.currentTimeMillis()/1000 + "\n";
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		Date date = new Date();
+		return username + ":" + this.getClass().getSimpleName() + ":" + dateFormat.format(date) + "\n";
 	}
 	
 	public String getName(){
@@ -28,10 +31,6 @@ public abstract class Person {
 
 	public String getUsername() {
 		return username;
-	}
-
-	public String getHashPw() {
-		return hashPw;
 	}
 
 	public String getFullName() {

@@ -40,9 +40,9 @@ public class AuditLog {
 			System.out.println("Connected established");			
 		}
 		
-		Doctor joel = new Doctor("Joel Pålsson", "12345", "lth");
-		Nurse n = new Nurse("Lukas", "43434", "lth");
-		Patient p = new Patient("Harald Nordgren", "54545");
+		Doctor joel = new Doctor("Joel Pålsson", "lth");
+		Nurse n = new Nurse("Lukas","lth");
+		Patient p = new Patient("Harald Nordgren");
 
 		//System.out.println(db.createRecord(joel, p.getName(), n.getName(), "aids2"));
 		ArrayList<RecordEntry> list = db.getRecords(joel, p.getName());

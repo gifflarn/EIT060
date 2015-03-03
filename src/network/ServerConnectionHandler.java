@@ -34,6 +34,7 @@ public class ServerConnectionHandler implements Runnable {
 	private Database database;
 	private Person p;
 	private Person p2;
+	private Person p3;
 
 	public ServerConnectionHandler(ServerSocket ss) throws IOException {
 		serverSocket = ss;
@@ -54,19 +55,20 @@ public class ServerConnectionHandler implements Runnable {
 					subject.split("O=")[1].split(",")[0] };
 			switch (info[1]) {
 			case "Doctor":
-				p = new Doctor(info[0], "", info[2]);
+				p = new Doctor(info[0], info[2]);
 				break;
 			case "Nurse":
-				p = new Nurse(info[0], "", info[2]);
+				p = new Nurse(info[0], info[2]);
 				break;
 			case "Patient":
-				p = new Patient(info[0], "");
+				p = new Patient(info[0]);
 				break;
 			case "Government":
-				p = new Government(info[0], "");
+				p = new Government(info[0]);
 			}
-			p = new Doctor("Joel Pï¿½lsson", "", info[2]);
-			p2 = new Nurse("Lukas Brandt Brune", "", info[2]);
+			p = new Doctor("Joel Pålsson",info[2]);
+			p3 = new Government("SocialStyrelsen");
+			p2 = new Nurse("Lukas Brandt Brune",info[2]);
 			numConnectedClients++;
 			System.out.println("client connected");
 			System.out.println("client name (cert subject DN field): "
@@ -178,7 +180,7 @@ public class ServerConnectionHandler implements Runnable {
 			
 			break;
 		case "remove":
-			TableFromDatabase frame = new TableFromDatabase(p);
+			TableFromDatabase frame = new TableFromDatabase(patientName);
 			frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 	        frame.pack();
 	        frame.setVisible(true);
@@ -186,18 +188,33 @@ public class ServerConnectionHandler implements Runnable {
 				id = Integer.valueOf(new ClientGUI()
 						.getText("Enter the ID you wish to delete: "));
 			} catch (NumberFormatException e) {
-				return "";
+				return "Not a valid number";
 			}
-		//	database.deleteRecord(p, patientName, id);
-			msg = "REMOVED_ENTRY:" + id + ":" + patientName;
+			frame.dispose();
+			database.deleteRecord(p, id);
+			msg = "REMOVED_ENTRY:" + id;
 			break;
 		case "read":
-			System.out.println(database.getRecords(p, patientName));
 			System.out.println(database.recordsToString(database.getRecords(p, patientName)));
 			msg = "READ_ENTRY:" + patientName;
 			break;
 		case "edit":
-		//	database.updateRecord(p, id);
+			TableFromDatabase frame2 = new TableFromDatabase(patientName);
+			frame2.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+	        frame2.pack();
+	        frame2.setVisible(true);
+			try {
+				id = Integer.valueOf(new ClientGUI()
+						.getText("Enter the ID you wish to edit: "));
+			} catch (NumberFormatException e) {
+				return "Not a valid number";
+			}
+			frame2.dispose();
+			String editData = new ClientGUI().getText("Enter the new data: ");
+			database.editRecord(p, patientName, id, editData);
+			msg = "EDITED_ENTRY:" + patientName + "WITH_NEW_DATA:" + editData;
+			break;
+			default: return msg = "Invalid Command";
 		}
 		AuditLog.saveToFile(p, patientName);
 		return msg;
