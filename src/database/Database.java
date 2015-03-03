@@ -108,9 +108,6 @@ public class Database {
 				if (!rs.next()) {
 					message = "You do not have the required access rights to create a record for the selected patient";
 				} else {
-//					DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");			//fixa datum
-//					Date creationDate = new Date(0);									//fixa datum
-//					Date lastUpdateDate = new Date(0);									//fixa datum
 					Date creationDate = new Date(System.currentTimeMillis());
 					Date lastUpdateDate = new Date(System.currentTimeMillis());
 					String hospitalDivision = d.getDivision();
@@ -152,27 +149,28 @@ public class Database {
 			return message = "You do not have the required access rights to edit records";
 		} else {
 			String name = person.getName();
+			Date lastUpdateDate = new Date(System.currentTimeMillis());
 			String hospitalDivision = null;
 			String sql = null;
 			PreparedStatement ps = null;
-
 			int rs = -1;
 			try {
 				if (person instanceof Doctor) {
 					Doctor d = (Doctor) person;
 					hospitalDivision = d.getDivision();
-					sql = "UPDATE Records SET data = ? WHERE recordId = ? AND (patient = ? AND doctor = ? OR division = ?)";
+					sql = "UPDATE Records SET data = ?, lastUpdateDate = ? WHERE recordId = ? AND (patient = ? AND doctor = ? OR division = ?)";
 				} else if (person instanceof Nurse) {
 					Nurse n = (Nurse) person;
 					hospitalDivision = n.getDivision();
-					sql = "UPDATE Records SET data = ? WHERE recordId = ? AND (patient = ? AND nurse = ? OR division = ?)";
+					sql = "UPDATE Records SET data = ?, lastUpdateDate = ? WHERE recordId = ? AND (patient = ? AND nurse = ? OR division = ?)";
 				}	
 				ps = conn.prepareStatement(sql);
 				ps.setString(1, data);
-				ps.setInt(2, recordId);
-				ps.setString(3, patientName);
-				ps.setString(4, name);
-				ps.setString(5, hospitalDivision);
+				ps.setDate(2, lastUpdateDate);
+				ps.setInt(3, recordId);
+				ps.setString(4, patientName);
+				ps.setString(5, name);
+				ps.setString(6, hospitalDivision);
 				rs = ps.executeUpdate();
 				if (rs == -1) {
 					message = "You do not have the required access rights to edit the selected record";
