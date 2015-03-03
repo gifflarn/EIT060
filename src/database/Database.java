@@ -108,9 +108,11 @@ public class Database {
 				if (!rs.next()) {
 					message = "You do not have the required access rights to create a record for the selected patient";
 				} else {
-					DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");			//fixa datum
-					Date creationDate = new Date(0);									//fixa datum
-					Date lastUpdateDate = new Date(0);									//fixa datum
+//					DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");			//fixa datum
+//					Date creationDate = new Date(0);									//fixa datum
+//					Date lastUpdateDate = new Date(0);									//fixa datum
+					Date creationDate = new Date(System.currentTimeMillis());
+					Date lastUpdateDate = new Date(System.currentTimeMillis());
 					String hospitalDivision = d.getDivision();
 					sql = "INSERT INTO Records VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
 					ps = conn.prepareStatement(sql);
