@@ -14,10 +14,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import javax.net.ssl.SSLSocket;
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 @SuppressWarnings("serial")
@@ -33,10 +35,15 @@ public class ClientGUI extends JFrame implements ActionListener,
 	private SSLSocket socket;
 
 	public String getText(String s) {
+		try{
 		String text = JOptionPane.showInputDialog(s);
 		return text;
+		} catch(NullPointerException e){
+			
+		}
+		return "";
 	}
-
+	
 	public void openConsole(BufferedReader read, PrintWriter out,
 			BufferedReader in, SSLSocket socket) {
 

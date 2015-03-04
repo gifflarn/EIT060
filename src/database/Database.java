@@ -6,13 +6,10 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import logs.RecordEntry;
 import people.Doctor;
-import people.Government;
 import people.Nurse;
 import people.Patient;
 import people.Person;
@@ -90,12 +87,9 @@ public class Database {
 		return conn;
 	}
 
-	@SuppressWarnings({ "finally", "resource" })
+	@SuppressWarnings("finally")
 	public String createRecord(Person person, String patientName, String associatedNurse, String data) {
 		String message = null;
-		if (!(person instanceof Doctor)) {
-			return message = "You do not have the required access rights to create records";
-		} else {
 			PreparedStatement ps = null;
 			try {
 				Doctor d = (Doctor) person;
@@ -140,14 +134,12 @@ public class Database {
 				return message;
 			}
 		}
-	} 
+	
 	
 	@SuppressWarnings("finally")
 	public String editRecord(Person person, String patientName, int recordId, String data) {
 		String message = null;
-		if (person instanceof Patient) {
-			return message = "You do not have the required access rights to edit records";
-		} else {
+
 			String name = person.getName();
 			Date lastUpdateDate = new Date(System.currentTimeMillis());
 			String hospitalDivision = null;
@@ -188,15 +180,12 @@ public class Database {
 				}
 				return message;	
 			}
-		}
+		
 	}	
 	
 	@SuppressWarnings("finally")
 	public String deleteRecord(Person person, int recordId) {
 		String message = null;
-		if (!(person instanceof Government)) {
-			return message = "You do not have the required access rights to delete records";
-		} else {
 			PreparedStatement ps = null;
 			try {
 				String sql = "DELETE FROM Records WHERE recordId = ?";
@@ -220,7 +209,7 @@ public class Database {
 				return message;
 			}
 		}
-	}
+	
 	
 	public ArrayList<RecordEntry> getRecords(Person person, String patientName) {
 		ArrayList<RecordEntry> records = new ArrayList<RecordEntry>();
@@ -269,7 +258,6 @@ public class Database {
 		return records;
 	}
 	
-	@SuppressWarnings("null")
 	public String recordsToString(ArrayList<RecordEntry> records, String PatientName) {
 		StringBuilder recordContent = new StringBuilder();
 		for (RecordEntry r : records) {

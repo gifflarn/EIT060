@@ -171,6 +171,9 @@ public class ServerConnectionHandler implements Runnable {
 
 		switch (clientMsg.toLowerCase()) {
 		case "add":
+			if(!(p instanceof Doctor)){
+				return "You don't have the permission to do that.";
+			}
 			String associatedNurse = new ClientGUI()
 					.getText("Enter Nurse's Name :");
 			String data = new ClientGUI().getText("Enter Additional Data:");
@@ -180,6 +183,9 @@ public class ServerConnectionHandler implements Runnable {
 			
 			break;
 		case "remove":
+			if(!(p instanceof Government)){
+				return "You don't have the permission to do that.";
+			}
 			TableFromDatabase frame = new TableFromDatabase(patientName);
 			frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 	        frame.pack();
@@ -199,6 +205,9 @@ public class ServerConnectionHandler implements Runnable {
 			msg = "READ_ENTRY:" + patientName;
 			break;
 		case "edit":
+			if(p instanceof Patient || p instanceof Government){
+				return "You don't have the permission to do that.";
+			}
 			TableFromDatabase frame2 = new TableFromDatabase(patientName);
 			frame2.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 	        frame2.pack();
@@ -214,9 +223,9 @@ public class ServerConnectionHandler implements Runnable {
 			database.editRecord(p, patientName, id, editData);
 			msg = "EDITED_ENTRY:" + patientName + "WITH_NEW_DATA:" + editData;
 			break;
-			default: return msg = "Invalid Command";
+			default: return "Invalid Command";
 		}
-		AuditLog.saveToFile(p, patientName);
+		AuditLog.saveToFile(p, msg);
 		return msg;
 
 	}

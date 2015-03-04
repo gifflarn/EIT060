@@ -34,7 +34,7 @@ public class ClientConnectionHandler {
 		try { /* set up a key manager for client authentication */
 			SSLSocketFactory factory = null;
 			try {
-				char[] password = gui.getText("Enter Password: ").toCharArray();
+				char[] password = gui.getText("Enter password: ").toCharArray();
 				
 				
 				KeyStore ks = KeyStore.getInstance("JKS");
@@ -86,10 +86,6 @@ public class ClientConnectionHandler {
 		}
 	}
 
-	private String getPassword() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	public void send(String text) {
 		// TODO Auto-generated method stub
