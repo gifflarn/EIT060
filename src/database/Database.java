@@ -88,129 +88,130 @@ public class Database {
 	}
 
 	@SuppressWarnings("finally")
-	public String createRecord(Person person, String patientName, String associatedNurse, String data) {
+	public String createRecord(Person person, String patientName,
+			String associatedNurse, String data) {
 		String message = null;
-			PreparedStatement ps = null;
-			try {
-				Doctor d = (Doctor) person;
-				String doctorName = d.getName();
-				String sql = "SELECT * FROM Records WHERE doctor = ? and patient = ?";
+		PreparedStatement ps = null;
+		try {
+			Doctor d = (Doctor) person;
+			String doctorName = d.getName();
+			String sql = "SELECT * FROM Records WHERE doctor = ? and patient = ?";
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, doctorName);
+			ps.setString(2, patientName);
+			ResultSet rs = ps.executeQuery();
+			if (!rs.next()) {
+				message = "You do not have the required access rights to create a record for the selected patient";
+			} else {
+				Date creationDate = new Date(System.currentTimeMillis());
+				Date lastUpdateDate = new Date(System.currentTimeMillis());
+				String hospitalDivision = d.getDivision();
+				sql = "INSERT INTO Records VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
 				ps = conn.prepareStatement(sql);
-				ps.setString(1, doctorName);
-				ps.setString(2, patientName);
-				ResultSet rs = ps.executeQuery();
-				if (!rs.next()) {
-					message = "You do not have the required access rights to create a record for the selected patient";
+				ps.setInt(1, 0);
+				ps.setDate(2, creationDate);
+				ps.setDate(3, lastUpdateDate);
+				ps.setString(4, patientName);
+				ps.setString(5, doctorName);
+				ps.setString(6, associatedNurse);
+				ps.setString(7, hospitalDivision);
+				ps.setString(8, data);
+				int n = ps.executeUpdate();
+				if (n != 1) { // hur skulle detta kunna ske utan att det
+								// genereras ett exception?
+					message = "Unable to add the record to the database";
 				} else {
-					Date creationDate = new Date(System.currentTimeMillis());
-					Date lastUpdateDate = new Date(System.currentTimeMillis());
-					String hospitalDivision = d.getDivision();
-					sql = "INSERT INTO Records VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
-					ps = conn.prepareStatement(sql);
-					ps.setInt(1, 0);
-					ps.setDate(2, creationDate);
-					ps.setDate(3, lastUpdateDate);
-					ps.setString(4, patientName);
-					ps.setString(5, doctorName);
-					ps.setString(6, associatedNurse);
-					ps.setString(7, hospitalDivision);
-					ps.setString(8, data);
-					int n = ps.executeUpdate();
-					if (n != 1) {							// hur skulle detta kunna ske utan att det genereras ett exception?
-						message = "Unable to add the record to the database";
-					} else {
-						message = "The record was successfully added to the database";
-					}
+					message = "The record was successfully added to the database";
 				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			message = "Unable add the record to the database";
+		} finally {
+			try {
+				ps.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
-				message = "Unable add the record to the database";
-			} finally {
-				try {
-					ps.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-				return message;
 			}
+			return message;
 		}
-	
-	
+	}
+
 	@SuppressWarnings("finally")
-	public String editRecord(Person person, String patientName, int recordId, String data) {
+	public String editRecord(Person person, String patientName, int recordId,
+			String data) {
 		String message = null;
 
-			String name = person.getName();
-			Date lastUpdateDate = new Date(System.currentTimeMillis());
-			String hospitalDivision = null;
-			String sql = null;
-			PreparedStatement ps = null;
-			int rs = -1;
-			try {
-				if (person instanceof Doctor) {
-					Doctor d = (Doctor) person;
-					hospitalDivision = d.getDivision();
-					sql = "UPDATE Records SET data = ?, lastUpdateDate = ? WHERE recordId = ? AND (patient = ? AND doctor = ? OR division = ?)";
-				} else if (person instanceof Nurse) {
-					Nurse n = (Nurse) person;
-					hospitalDivision = n.getDivision();
-					sql = "UPDATE Records SET data = ?, lastUpdateDate = ? WHERE recordId = ? AND (patient = ? AND nurse = ? OR division = ?)";
-				}	
-				ps = conn.prepareStatement(sql);
-				ps.setString(1, data);
-				ps.setDate(2, lastUpdateDate);
-				ps.setInt(3, recordId);
-				ps.setString(4, patientName);
-				ps.setString(5, name);
-				ps.setString(6, hospitalDivision);
-				rs = ps.executeUpdate();
-				if (rs == -1) {
-					message = "You do not have the required access rights to edit the selected record";
-				} else {
-					message = "The record was successfully updated";
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();	
-				message = "Unable add the record to the database";
-			} finally {
-				try {
-					ps.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-				return message;	
+		String name = person.getName();
+		Date lastUpdateDate = new Date(System.currentTimeMillis());
+		String hospitalDivision = null;
+		String sql = null;
+		PreparedStatement ps = null;
+		int rs = -1;
+		try {
+			if (person instanceof Doctor) {
+				Doctor d = (Doctor) person;
+				hospitalDivision = d.getDivision();
+				sql = "UPDATE Records SET data = ?, lastUpdateDate = ? WHERE recordId = ? AND (patient = ? AND doctor = ? OR division = ?)";
+			} else if (person instanceof Nurse) {
+				Nurse n = (Nurse) person;
+				hospitalDivision = n.getDivision();
+				sql = "UPDATE Records SET data = ?, lastUpdateDate = ? WHERE recordId = ? AND (patient = ? AND nurse = ? OR division = ?)";
 			}
-		
-	}	
-	
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, data);
+			ps.setDate(2, lastUpdateDate);
+			ps.setInt(3, recordId);
+			ps.setString(4, patientName);
+			ps.setString(5, name);
+			ps.setString(6, hospitalDivision);
+			rs = ps.executeUpdate();
+			if (rs == -1) {
+				message = "You do not have the required access rights to edit the selected record";
+			} else {
+				message = "The record was successfully updated";
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			message = "Unable add the record to the database";
+		} finally {
+			try {
+				ps.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			return message;
+		}
+
+	}
+
 	@SuppressWarnings("finally")
 	public String deleteRecord(Person person, int recordId) {
 		String message = null;
-			PreparedStatement ps = null;
+		PreparedStatement ps = null;
+		try {
+			String sql = "DELETE FROM Records WHERE recordId = ?";
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1, recordId);
+			int n = ps.executeUpdate();
+			if (n != 1) {
+				message = "The selected record id does not exist";
+			} else {
+				message = "The record was successfully deleted from the database";
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			message = "Unable delete the record from the database";
+		} finally {
 			try {
-				String sql = "DELETE FROM Records WHERE recordId = ?";
-				ps = conn.prepareStatement(sql);
-				ps.setInt(1, recordId);
-				int n = ps.executeUpdate();
-				if (n != 1) {
-					message = "The selected record id does not exist";
-				} else {
-					message = "The record was successfully deleted from the database";
-				}
+				ps.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
-				message = "Unable delete the record from the database";
-			} finally {
-				try {
-					ps.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-				return message;
 			}
+			return message;
 		}
-	
-	
+	}
+
 	public ArrayList<RecordEntry> getRecords(Person person, String patientName) {
 		ArrayList<RecordEntry> records = new ArrayList<RecordEntry>();
 		String name = person.getName();
@@ -223,7 +224,7 @@ public class Database {
 				ps = conn.prepareStatement(sql);
 				ps.setString(1, name);
 			} else {
-				String hospitalDivision = null;	
+				String hospitalDivision = null;
 				if (person instanceof Doctor) {
 					Doctor d = (Doctor) person;
 					hospitalDivision = d.getDivision();
@@ -241,10 +242,10 @@ public class Database {
 			rs = ps.executeQuery();
 			while (rs.next()) {
 				records.add(new RecordEntry(rs.getInt("recordId"), rs
-					.getDate("creationDate"), rs.getDate("lastUpdateDate"),
-					rs.getString("patient"), rs.getString("doctor"), rs
-					.getString("nurse"), rs.getString("division"),
-					rs.getString("data")));
+						.getDate("creationDate"), rs.getDate("lastUpdateDate"),
+						rs.getString("patient"), rs.getString("doctor"), rs
+								.getString("nurse"), rs.getString("division"),
+						rs.getString("data")));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -257,11 +258,12 @@ public class Database {
 		}
 		return records;
 	}
-	
-	public String recordsToString(ArrayList<RecordEntry> records, String PatientName) {
+
+	public String recordsToString(ArrayList<RecordEntry> records,
+			String PatientName) {
 		StringBuilder recordContent = new StringBuilder();
 		for (RecordEntry r : records) {
-			if(!PatientName.equals(r.getPatient())){
+			if (!PatientName.equals(r.getPatient())) {
 				continue;
 			}
 			recordContent.append("Patient name: " + r.getPatient() + "\n"
@@ -272,5 +274,34 @@ public class Database {
 		}
 		return recordContent.toString();
 	}
-	
+
+	public ResultSet getMetaData(String patientName) {
+		String sql = "SELECT * FROM Records WHERE patient = ?";
+		PreparedStatement ps;
+		ResultSet rs = null;
+		try {
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, patientName);
+			rs = ps.executeQuery();
+		} catch (SQLException e) {
+			return null;
+		}
+		return rs;
+	}
+
+	public boolean isAssociated(String patientName, Doctor d) {
+		String sql = "SELECT * FROM Records WHERE Patient = ? AND Doctor = ?";
+		PreparedStatement ps;
+		ResultSet rs;
+		try {
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, patientName);
+			ps.setString(2, d.getName());
+			rs = ps.executeQuery();
+			return rs.next();
+		} catch (SQLException e) {
+			return false;
+		}
+	}
+
 }

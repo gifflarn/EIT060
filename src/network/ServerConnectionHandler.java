@@ -33,8 +33,6 @@ public class ServerConnectionHandler implements Runnable {
 	private static int numConnectedClients = 0;
 	private Database database;
 	private Person p;
-	private Person p2;
-	private Person p3;
 
 	public ServerConnectionHandler(ServerSocket ss) throws IOException {
 		serverSocket = ss;
@@ -66,9 +64,7 @@ public class ServerConnectionHandler implements Runnable {
 			case "Government":
 				p = new Government(info[0]);
 			}
-		//	p = new Doctor("Joel Pålsson",info[2]);
-			p3 = new Government("SocialStyrelsen");
-			p2 = new Nurse("Lukas Brandt Brune",info[2]);
+			// p = new Doctor("Joel Pålsson",info[2]);
 			numConnectedClients++;
 			System.out.println("client connected");
 			System.out.println("client name (cert subject DN field): "
@@ -141,13 +137,15 @@ public class ServerConnectionHandler implements Runnable {
 				KeyStore ts = KeyStore.getInstance("JKS");
 				char[] password = "password".toCharArray();
 
-				ks.load(new FileInputStream("certificates/serverkeystore"), password); // keystore
+				ks.load(new FileInputStream("certificates/serverkeystore"),
+						password); // keystore
 				// password
 				// (storepass)
-				ts.load(new FileInputStream("certificates/servertruststore"), password); // truststore
-																					// password
-																					// //
-																					// (storepass)
+				ts.load(new FileInputStream("certificates/servertruststore"),
+						password); // truststore
+				// password
+				// //
+				// (storepass)
 				kmf.init(ks, password); // certificate password (keypass)
 				tmf.init(ts); // possible to use keystore as truststore here
 				ctx.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
@@ -171,25 +169,26 @@ public class ServerConnectionHandler implements Runnable {
 
 		switch (clientMsg.toLowerCase()) {
 		case "add":
-			if(!(p instanceof Doctor)){
+			if (!(p instanceof Doctor)) {
 				return "You don't have the permission to do that.";
 			}
 			String associatedNurse = new ClientGUI()
 					.getText("Enter Nurse's Name :");
 			String data = new ClientGUI().getText("Enter Additional Data:");
-//			p = new Doctor
-			System.out.println(database.createRecord(p, patientName, associatedNurse, data));
+			System.out.println(database.createRecord(p, patientName,
+					associatedNurse, data));
 			msg = "ADDED_ENTRY:" + patientName;
-			
+
 			break;
 		case "remove":
-			if(!(p instanceof Government)){
+			if (!(p instanceof Government)) {
 				return "You don't have the permission to do that.";
 			}
-			TableFromDatabase frame = new TableFromDatabase(patientName);
-			frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-	        frame.pack();
-	        frame.setVisible(true);
+			TableFromDatabase frame = new TableFromDatabase();
+			frame.createTableFromDatabase(p, patientName);
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.pack();
+			frame.setVisible(true);
 			try {
 				id = Integer.valueOf(new ClientGUI()
 						.getText("Enter the ID you wish to delete: "));
@@ -201,17 +200,21 @@ public class ServerConnectionHandler implements Runnable {
 			msg = "REMOVED_ENTRY:" + id;
 			break;
 		case "read":
-			System.out.println(database.recordsToString(database.getRecords(p, patientName), patientName));
+			System.out.println(database.recordsToString(
+					database.getRecords(p, patientName), patientName));
 			msg = "READ_ENTRY:" + patientName;
 			break;
 		case "edit":
-			if(p instanceof Patient || p instanceof Government){
+			if (p instanceof Patient || p instanceof Government) {
 				return "You don't have the permission to do that.";
 			}
-			TableFromDatabase frame2 = new TableFromDatabase(patientName);
-			frame2.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-	        frame2.pack();
-	        frame2.setVisible(true);
+			TableFromDatabase frame2 = new TableFromDatabase();
+			if (frame2.createTableFromDatabase(p, patientName)) {
+				return "You don't have permission to do that.";
+			}
+			frame2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame2.pack();
+			frame2.setVisible(true);
 			try {
 				id = Integer.valueOf(new ClientGUI()
 						.getText("Enter the ID you wish to edit: "));
@@ -223,7 +226,8 @@ public class ServerConnectionHandler implements Runnable {
 			database.editRecord(p, patientName, id, editData);
 			msg = "EDITED_ENTRY:" + patientName + "WITH_NEW_DATA:" + editData;
 			break;
-			default: return "Invalid Command";
+		default:
+			return "Invalid Command";
 		}
 		AuditLog.saveToFile(p, msg);
 		return msg;

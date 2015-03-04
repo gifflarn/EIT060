@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import javax.net.ssl.SSLSocket;
-import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
