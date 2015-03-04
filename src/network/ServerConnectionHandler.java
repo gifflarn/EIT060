@@ -66,7 +66,7 @@ public class ServerConnectionHandler implements Runnable {
 			case "Government":
 				p = new Government(info[0]);
 			}
-			p = new Doctor("Joel Pålsson",info[2]);
+		//	p = new Doctor("Joel Pålsson",info[2]);
 			p3 = new Government("SocialStyrelsen");
 			p2 = new Nurse("Lukas Brandt Brune",info[2]);
 			numConnectedClients++;

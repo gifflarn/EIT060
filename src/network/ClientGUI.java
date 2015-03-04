@@ -35,15 +35,27 @@ public class ClientGUI extends JFrame implements ActionListener,
 	private SSLSocket socket;
 
 	public String getText(String s) {
-		try{
-		String text = JOptionPane.showInputDialog(s);
-		return text;
-		} catch(NullPointerException e){
-			
+		try {
+			String text = JOptionPane.showInputDialog(s);
+			return text;
+		} catch (NullPointerException e) {
+
 		}
 		return "";
 	}
 	
+	public String getPassword(){
+		JPasswordField pwd = new JPasswordField(10);
+	    int action = JOptionPane.showConfirmDialog(null, pwd,"Enter Password",JOptionPane.OK_CANCEL_OPTION);
+	    if(action < 0){
+	    	JOptionPane.showMessageDialog(null,"Cancel, X or escape key selected");
+	    	return "";
+	    }
+	    else {
+	    	return new String(pwd.getPassword());
+	    } 
+	}
+
 	public void openConsole(BufferedReader read, PrintWriter out,
 			BufferedReader in, SSLSocket socket) {
 
@@ -101,8 +113,8 @@ public class ClientGUI extends JFrame implements ActionListener,
 		out.println(input.getText());
 		out.flush();
 
-		 output.setText("Awaiting response...");
-		
+		output.setText("Awaiting response...");
+
 		// then wait for response
 		try {
 			output.setText("Response: " + in.readLine());
@@ -126,7 +138,6 @@ public class ClientGUI extends JFrame implements ActionListener,
 		}
 
 	}
-
 
 	public void windowClosing(java.awt.event.WindowEvent arg0) {
 		disconnect();
@@ -168,12 +179,12 @@ public class ClientGUI extends JFrame implements ActionListener,
 
 	public void windowActivated(WindowEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void windowClosed(WindowEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

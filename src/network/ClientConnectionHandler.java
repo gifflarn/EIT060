@@ -34,7 +34,7 @@ public class ClientConnectionHandler {
 		try { /* set up a key manager for client authentication */
 			SSLSocketFactory factory = null;
 			try {
-				char[] password = gui.getText("Enter password: ").toCharArray();
+				char[] password = gui.getPassword().toCharArray();
 				
 				
 				KeyStore ks = KeyStore.getInstance("JKS");
@@ -42,10 +42,10 @@ public class ClientConnectionHandler {
 				KeyManagerFactory kmf = KeyManagerFactory.getInstance("SunX509");
 				TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509");
 				SSLContext ctx = SSLContext.getInstance("TLS");
-				ks.load(new FileInputStream("lab1/clientkeystore"), password); // keystore
+				ks.load(new FileInputStream("certificates/harald/clientkeystore"), password); // keystore
 																						// password
 																						// (storepass)
-				ts.load(new FileInputStream("lab1/clienttruststore"), password); // truststore
+				ts.load(new FileInputStream("certificates/harald/clienttruststore"), password); // truststore
 																						// password
 													// (storepass);
 				kmf.init(ks, password); // user password (keypass)
