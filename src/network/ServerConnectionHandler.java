@@ -141,10 +141,10 @@ public class ServerConnectionHandler implements Runnable {
 				KeyStore ts = KeyStore.getInstance("JKS");
 				char[] password = "password".toCharArray();
 
-				ks.load(new FileInputStream("lab1/serverkeystore"), password); // keystore
+				ks.load(new FileInputStream("certificates/serverkeystore"), password); // keystore
 				// password
 				// (storepass)
-				ts.load(new FileInputStream("lab1/servertruststore"), password); // truststore
+				ts.load(new FileInputStream("certificates/servertruststore"), password); // truststore
 																					// password
 																					// //
 																					// (storepass)
