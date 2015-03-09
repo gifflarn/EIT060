@@ -9,10 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import logs.RecordEntry;
-import people.Doctor;
-import people.Nurse;
-import people.Patient;
-import people.Person;
+import people.*;
 
 /**
  * Database is a class that specifies the interface to the movie database. Uses
@@ -223,6 +220,10 @@ public class Database {
 				sql = "SELECT * FROM Records WHERE patient = ?";
 				ps = conn.prepareStatement(sql);
 				ps.setString(1, name);
+			}else if(person instanceof Government){
+				sql = "SELECT * FROM Records WHERE patient = ?";
+				ps = conn.prepareStatement(sql);
+				ps.setString(1, patientName);
 			} else {
 				String hospitalDivision = null;
 				if (person instanceof Doctor) {

@@ -51,12 +51,12 @@ public class ServerConnectionHandler implements Runnable {
 					subject.split("CN=")[1].split(",")[0],
 					subject.split("OU=")[1].split(",")[0],
 					subject.split("O=")[1].split(",")[0] };
-			switch (info[1]) {
+			switch (info[2].toString()) {
 			case "Doctor":
-				p = new Doctor(info[0], info[2]);
+				p = new Doctor(info[0], info[1]);
 				break;
 			case "Nurse":
-				p = new Nurse(info[0], info[2]);
+				p = new Nurse(info[0], info[1]);
 				break;
 			case "Patient":
 				p = new Patient(info[0]);
@@ -64,7 +64,7 @@ public class ServerConnectionHandler implements Runnable {
 			case "Government":
 				p = new Government(info[0]);
 			}
-			// p = new Doctor("Joel Pålsson",info[2]);
+		//	 p = new Government("Lukas");
 			numConnectedClients++;
 			System.out.println("client connected");
 			System.out.println("client name (cert subject DN field): "

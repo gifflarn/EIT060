@@ -42,10 +42,10 @@ public class ClientConnectionHandler {
 				KeyManagerFactory kmf = KeyManagerFactory.getInstance("SunX509");
 				TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509");
 				SSLContext ctx = SSLContext.getInstance("TLS");
-				ks.load(new FileInputStream("certificates/harald/keystore"), password); // keystore
+				ks.load(new FileInputStream("certificates/joel/keystore"), password); // keystore
 																						// password
 																						// (storepass)
-				ts.load(new FileInputStream("certificates/harald/truststore"), password); // truststore
+				ts.load(new FileInputStream("certificates/joel/truststore"), password); // truststore
 																						// password
 													// (storepass);
 				kmf.init(ks, password); // user password (keypass)
