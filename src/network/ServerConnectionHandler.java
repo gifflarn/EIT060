@@ -209,7 +209,7 @@ public class ServerConnectionHandler implements Runnable {
 				return "You don't have the permission to do that.";
 			}
 			TableFromDatabase frame2 = new TableFromDatabase();
-			if (frame2.createTableFromDatabase(p, patientName)) {
+			if (!frame2.createTableFromDatabase(p, patientName)) {
 				return "You don't have permission to do that.";
 			}
 			frame2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
